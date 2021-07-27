@@ -9,31 +9,26 @@ namespace BoardSystem
     public class Tile   //is made public so its accessible outside the boardsystem assembly
     {
         public Position Position { get; }
-
-        //public event EventHandler HighlightStatusChanged;
-
-        //private bool _isHighlighted = false;
-
         public Tile(Position position) => Position = position;
 
-        //public bool IsHighlighted
-        //{
-        //    get => _isHighlighted;
-        //    set
-        //    {
-        //        _isHighlighted = value;
-        //        OnHighlightStatusChanged(EventArgs.Empty);
-        //    }
-        //}
+        public event EventHandler HighlightStatusChanged;
+        private bool _isHighlighted = false;
 
-        //protected virtual void OnHighlightStatusChanged(EventArgs args)
-        //{
-        //    EventHandler handler = HighlightStatusChanged;
-        //    handler?.Invoke(this, args);
-        //}
+        public bool IsHighlighted
+        {
+            get => _isHighlighted;
+            internal set
+            {
+                _isHighlighted = value;
+                OnHighlightStatusChanged(EventArgs.Empty);
+            }
+        }
 
-        //{
-        //    Position = new Position { X = x, Y = y};
-        //}
+        protected virtual void OnHighlightStatusChanged(EventArgs args)
+        {
+            EventHandler handler = HighlightStatusChanged;
+            handler?.Invoke(this, args);    //? means if its not null then invoke
+        }
+
     }
 }

@@ -5,72 +5,72 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 namespace GameSystem.Views
 {
     public class TileView : MonoBehaviour
     {
+        [SerializeField]
+        private Material _highlightMaterial = null;
+
+        [SerializeField]
+        private PositionHelper _positionHelper = null;
+
+        public Vector3 worldPosition;
+
+        private Material _originalMaterial;
+
+        private MeshRenderer _meshRenderer;
 
         private Tile _model;
 
-        //[SerializeField]
-        //private Material _highlightMaterial = null;
+        public Tile Model
+        {
+            get => _model;  //if we are getting the value, return the _model value
+            set             //if we are setting the value...
+            {
+                if (_model != null)
+                {
+                    _model.HighlightStatusChanged -= ModelHighlightStatusChanged;   //if the model exists, remove the subscription, so that the previous model 
+                }                                                                   //no longer gets updates from this view
 
-        //[SerializeField]
-        //private PositionHelper _positionHelper = null;
+                _model = value;
 
-        //public Vector3 worldPosition;
+                if (_model != null)                                                 //now assign the model value
+                {
+                    _model.HighlightStatusChanged += ModelHighlightStatusChanged;
+                }
+            }
+        }
 
-        //private Material _originalMaterial;
+        private void Start()
+        {
+            var board = GameLoop.Instance.Board;
+            var boardPosition = _positionHelper.ToBoardPosition(transform.position);
+            var tile = board.TileAt(boardPosition);
 
-        //private MeshRenderer _meshRenderer;
+            Model = tile;
 
-        //public Tile Model
-        //{
-        //    get => _model;
-        //    set
-        //    {
-        //        if (_model != null)
-        //        {
-        //            _model.HighlightStatusChanged -= ModelHighlightStatusChanged;
-        //        }
+            worldPosition = transform.position;
 
-        //        _model = value;
+            _meshRenderer = GetComponentInChildren<MeshRenderer>();
+            _originalMaterial = _meshRenderer.sharedMaterial;
 
-        //        if (_model != null)
-        //        {
-        //            _model.HighlightStatusChanged += ModelHighlightStatusChanged;
-        //        }
-        //    }
-        //}
+            //GameLoop.Instance.FindCardMovements();
+        }
 
-        //private void Start()
-        //{
-        //    var board = GameLoop.Instance.Board;
-        //    var boardPosition = _positionHelper.ToBoardPosition(transform.position);
-        //    var tile = board.TileAt(boardPosition);
+        private void ModelHighlightStatusChanged(object sender, System.EventArgs e)
+        {
+            if (Model.IsHighlighted) _meshRenderer.material = _highlightMaterial;
 
-        //    Model = tile;
+            else _meshRenderer.material = _originalMaterial;
+        }
 
-        //    worldPosition = transform.position;
-
-        //    _meshRenderer = GetComponentInChildren<MeshRenderer>();
-        //    _originalMaterial = _meshRenderer.sharedMaterial;
-
-        //    //GameLoop.Instance.FindCardMovements();
-        //}
-
-        //private void ModelHighlightStatusChanged(object sender, System.EventArgs e)
-        //{
-        //    if (Model.IsHighlighted)
-        //    {
-        //        _meshRenderer.material = _highlightMaterial;
-        //    }
-        //    else
-        //    {
-        //        _meshRenderer.material = _originalMaterial;
-        //    }
-        //}
+        public void OnPointerClick(PointerEventData eventData)
+        {
+            GameLoop.Instance.Select(Model);
+        }
 
         internal Vector3 Size
         {
@@ -94,9 +94,10 @@ namespace GameSystem.Views
 
         public static (float w, float h) PointyDimension(float size) => (Mathf.Sqrt(3f) * size, 2f * size);
 
-        //private void OnDestroy()
-        //{
-        //    Model = null;
-        //}
+
+        private void OnDestroy()
+        {
+            Model = null;   //this makes it so we dont call a method on a view that has been destroyed already 
+        }
     }
 }

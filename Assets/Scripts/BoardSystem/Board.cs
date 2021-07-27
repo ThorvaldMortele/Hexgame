@@ -6,26 +6,21 @@ using System.Threading.Tasks;
 
 namespace BoardSystem
 {
-    public class Board
+    public class Board<TPiece> where TPiece : class
     {
         private Dictionary<Position, Tile> _tiles = new Dictionary<Position, Tile>();   //a board has a list of tiles, in this case hexagons
                                                                                                 //dictionary is used so you dont have to cycle over all tiles
                                                                                                 //now u can get the tile based on the pos (the key)
 
-        private List<Piece> _values = new List<Piece>();  //the pieces and tiles are split into keys and values because a dictionary can only go in one way
+        private List<TPiece> _values = new List<TPiece>();  //the pieces and tiles are split into keys and values because a dictionary can only go in one way
         private List<Tile> _keys = new List<Tile>();  //and we need it to work in 2 ways
-
-        //public readonly int Rows;
-        //public readonly int Columns;
 
         public readonly int Radius;
 
         public List<Tile> Tiles => _tiles.Values.ToList();
 
-        public Board(/*int rows, int columns*/int radius)
+        public Board(int radius)
         {
-            //Rows = rows;
-            //Columns = columns;
             Radius = radius;
 
             InitTiles();
@@ -39,16 +34,16 @@ namespace BoardSystem
             return null;
         }
 
-        public Piece PieceAt(Tile tile)  //find the piece at a specified tile
+        public TPiece PieceAt(Tile tile)  //find the piece at a specified tile
         {
             var idx = _keys.IndexOf(tile);  //get the index of the tile in the keys list
 
-            if (idx == -1) return null;   //als de idx -1 is betekent het dat er geen tile in de lijst zat
+            if (idx == -1) return default(TPiece);   //als de idx -1 is betekent het dat er geen tile in de lijst zat
 
             return _values[idx];       //then get the corresponding piece with the same index
         }
 
-        public Tile TileOf(Piece piece) //find the tile that the specified piece is on
+        public Tile TileOf(TPiece piece) //find the tile that the specified piece is on
         {
             var idx = _values.IndexOf(piece);   //get the index of the piece in its list
 
@@ -58,10 +53,10 @@ namespace BoardSystem
 
         }
 
-        public Piece Take(Tile fromTile)
+        public TPiece Take(Tile fromTile)
         {
             var idx = _keys.IndexOf(fromTile);
-            if (idx == -1) return null; //if idx == -1 that means there was nothing on that spot (no tile)
+            if (idx == -1) return default(TPiece); //if idx == -1 that means there was nothing on that spot (no tile)
 
             var piece = _values[idx];
 
@@ -81,7 +76,7 @@ namespace BoardSystem
             _keys[idx] = toTile;
         }
 
-        public void Place(Tile toTile, Piece piece)
+        public void Place(Tile toTile, TPiece piece)
         {
             if (_keys.Contains(toTile)) return;
 
@@ -93,14 +88,6 @@ namespace BoardSystem
 
         private void InitTiles()
         {
-            //for (int y = 0; y < Rows; y++)
-            //{
-            //    for (int x = 0; x < Columns; x++)
-            //    {
-            //        _tiles.Add(new Position { X = x, Y = y }, new Tile(x, y));  //adds a position to the list together with a tile of the same pos
-            //    }
-            //}
-
             for (int q = -Radius; q <= Radius; q++)
             {
                 int r1 = Math.Max(-Radius, -q - Radius);
@@ -114,7 +101,22 @@ namespace BoardSystem
                     _tiles.Add(toBeAddedPos, toBeAddedTile);
                 }
             }
+        }
 
+        public void Highlight(List<Tile> tiles)
+        {
+            foreach (var tile in tiles)
+            {
+                tile.IsHighlighted = true;
+            }
+        }
+
+        public void UnHighlight(List<Tile> tiles)
+        {
+            foreach (var tile in tiles)
+            {
+                tile.IsHighlighted = false;
+            }
         }
     }
 }

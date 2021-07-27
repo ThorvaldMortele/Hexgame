@@ -1,9 +1,4 @@
 ﻿using BoardSystem;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using UnityEngine;
 
 namespace GameSystem.Views
@@ -15,17 +10,18 @@ namespace GameSystem.Views
         private TileView _tileView = null;
 
         [SerializeField]
-        private PositionHelper _positionHelper;
+        private PositionHelper _positionHelper = null;
 
-        public TileView CreateTileview(/*Board board, */Tile tile, Transform parent)
+        public TileView CreateTileview(Tile tile, Transform parent)
         {
-            var position = _positionHelper.ToWorldPosition(/*board, */tile.Position);
+            var position = _positionHelper.ToWorldPosition(tile.Position);
 
             var tileView = GameObject.Instantiate(_tileView, position, Quaternion.identity, parent);
 
             tileView.Size = _positionHelper.TileSize;
             tileView.name = $"Tile{tile.Position.X} {tile.Position.Y} {tile.Position.Z}";
 
+            //tileView.Model = tile;
 
             return tileView;
         }
