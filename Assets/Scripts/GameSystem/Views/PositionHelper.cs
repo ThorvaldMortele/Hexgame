@@ -4,9 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using static GameSystem.Utils.BoardExtension;
 using UnityEngine;
-using GameSystem.Utils;
 
 namespace GameSystem.Views
 {
@@ -18,29 +16,47 @@ namespace GameSystem.Views
 
         public Vector3 TileSize => _tileSize;
 
-        public Position ToBoardPosition(Board board, Vector3 worldPosition)
+        public Position ToBoardPosition(Vector3 worldPosition)
         {
-            var boardSize = Vector3.Scale(board.AsVector3(), TileSize);
+            var q = (Mathf.Sqrt(3) / 3f * worldPosition.x - 1f / 3f * worldPosition.z);
+            var r = (2f / 3f * worldPosition.z);
 
-            var boardOffset = (TileSize - boardSize) / 2;
-            boardOffset.y = -TileSize.y / 2;
+            var (x, y, z) = CubeRound(q, -q - r, r);
 
-            var offset = worldPosition - boardOffset;
-            var boardPosition = new Position { X = (int)(offset.x / TileSize.x), Y = (int)(offset.z / TileSize.z) };
+            var axialPosition = new Position((int)x, (int)z);
 
-            return boardPosition;
+            return axialPosition;
         }
 
-        public Vector3 ToWorldPosition(Board board, Position boardPosition)
+        public Vector3 ToWorldPosition(Position boardPosition)
         {
-            var boardSize = Vector3.Scale(board.AsVector3(), TileSize);
+            var tilePosition = new Vector3
+            {
+                x = (Mathf.Sqrt(3) * boardPosition.Q + Mathf.Sqrt(3) / 2f * boardPosition.R),
+                z = (3f / 2f * boardPosition.R)
+            };
 
-            var boardOffset = (TileSize - boardSize) / 2;
-            boardOffset.y = -TileSize.y / 2;
+            return tilePosition;
+        }
 
-            var tilePos = boardOffset + Vector3.Scale(boardPosition.AsVector3(), TileSize);
+        public static (float x, float y, float z) CubeRound(float x, float y, float z)
+        {
+            var rx = Mathf.Round(x);
+            var ry = Mathf.Round(y);
+            var rz = Mathf.Round(z);
 
-            return tilePos;
+            var x_diff = Mathf.Abs(rx - x);
+            var y_diff = Mathf.Abs(ry - y);
+            var z_diff = Mathf.Abs(rz - z);
+
+            if (x_diff > y_diff && x_diff > z_diff)
+                rx = -ry - rz;
+            else if (y_diff > z_diff)
+                ry = -rx - rz;
+            else
+                rz = -rx - ry;
+
+            return (rx, ry, rz);
         }
     }
 }

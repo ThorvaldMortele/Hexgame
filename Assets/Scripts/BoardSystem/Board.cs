@@ -15,15 +15,18 @@ namespace BoardSystem
         private List<Piece> _values = new List<Piece>();  //the pieces and tiles are split into keys and values because a dictionary can only go in one way
         private List<Tile> _keys = new List<Tile>();  //and we need it to work in 2 ways
 
-        public readonly int Rows;
-        public readonly int Columns;
+        //public readonly int Rows;
+        //public readonly int Columns;
+
+        public readonly int Radius;
 
         public List<Tile> Tiles => _tiles.Values.ToList();
 
-        public Board(int rows, int columns)
+        public Board(/*int rows, int columns*/int radius)
         {
-            Rows = rows;
-            Columns = columns;
+            //Rows = rows;
+            //Columns = columns;
+            Radius = radius;
 
             InitTiles();
         }
@@ -90,13 +93,28 @@ namespace BoardSystem
 
         private void InitTiles()
         {
-            for (int y = 0; y < Rows; y++)
+            //for (int y = 0; y < Rows; y++)
+            //{
+            //    for (int x = 0; x < Columns; x++)
+            //    {
+            //        _tiles.Add(new Position { X = x, Y = y }, new Tile(x, y));  //adds a position to the list together with a tile of the same pos
+            //    }
+            //}
+
+            for (int q = -Radius; q <= Radius; q++)
             {
-                for (int x = 0; x < Columns; x++)
+                int r1 = Math.Max(-Radius, -q - Radius);
+                int r2 = Math.Min(Radius, -q + Radius);
+
+                for (int r = r1; r <= r2; r++)
                 {
-                    _tiles.Add(new Position { X = x, Y = y }, new Tile(x, y));  //adds a position to the list together with a tile of the same pos
+                    var toBeAddedPos = new Position { X = q, Y = r, Z = -q - r };
+                    var toBeAddedTile = new Tile(new Position(q, r, -q - r));
+
+                    _tiles.Add(toBeAddedPos, toBeAddedTile);
                 }
             }
+
         }
     }
 }

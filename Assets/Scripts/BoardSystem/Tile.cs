@@ -10,9 +10,30 @@ namespace BoardSystem
     {
         public Position Position { get; }
 
-        public Tile (int x, int y)
-        {
-            Position = new Position { X = x, Y = y};
-        }
+        //public event EventHandler HighlightStatusChanged;
+
+        //private bool _isHighlighted = false;
+
+        public Tile(Position position) => Position = position;
+
+        //public bool IsHighlighted
+        //{
+        //    get => _isHighlighted;
+        //    set
+        //    {
+        //        _isHighlighted = value;
+        //        OnHighlightStatusChanged(EventArgs.Empty);
+        //    }
+        //}
+
+        //protected virtual void OnHighlightStatusChanged(EventArgs args)
+        //{
+        //    EventHandler handler = HighlightStatusChanged;
+        //    handler?.Invoke(this, args);
+        //}
+
+        //{
+        //    Position = new Position { X = x, Y = y};
+        //}
     }
 }

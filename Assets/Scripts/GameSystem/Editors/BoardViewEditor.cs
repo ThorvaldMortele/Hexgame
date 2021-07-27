@@ -25,7 +25,7 @@ namespace BoardSystem.Editor
 
                 foreach (var tile in board.Tiles)
                 {
-                    tileviewFactory.CreateTileview(board, tile, boardview.transform);
+                    tileviewFactory.CreateTileview(tile, boardview.transform);
                 }
             }
         }

@@ -9,6 +9,6 @@ public class GameLoop : SingletonMonoBehaviour<GameLoop>
 {
     [SerializeField]
     private PositionHelper _positionHelper;
-    public Board Board { get; } = new Board(8, 8);
+    public Board Board { get; } = new Board(3);
 
 }

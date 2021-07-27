@@ -17,14 +17,14 @@ namespace GameSystem.Views
         [SerializeField]
         private PositionHelper _positionHelper;
 
-        public TileView CreateTileview(Board board, Tile tile, Transform parent)
+        public TileView CreateTileview(/*Board board, */Tile tile, Transform parent)
         {
-            var position = _positionHelper.ToWorldPosition(board, tile.Position);
+            var position = _positionHelper.ToWorldPosition(/*board, */tile.Position);
 
             var tileView = GameObject.Instantiate(_tileView, position, Quaternion.identity, parent);
 
             tileView.Size = _positionHelper.TileSize;
-            tileView.name = $"Tile{(char)(65 + tile.Position.X)}{tile.Position.X}";
+            tileView.name = $"Tile{tile.Position.X} {tile.Position.Y} {tile.Position.Z}";
 
 
             return tileView;
