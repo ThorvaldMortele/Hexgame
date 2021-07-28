@@ -14,6 +14,8 @@ namespace GameSystem.Models
     {
         private List<Tile> _validTiles = new List<Tile>();
 
+        protected abstract List<Tile> FindValidTiles();
+
         [SerializeField]
         private PositionHelper _positionHelper;
 
@@ -39,8 +41,6 @@ namespace GameSystem.Models
             var board = GameLoop.Instance.Board;
             board.UnHighlight(_validTiles);
         }
-
-        protected abstract List<Tile> FindValidTiles();
 
         public bool Move(Tile toTile)
         {

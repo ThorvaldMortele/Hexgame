@@ -1,6 +1,4 @@
-﻿
-
-using BoardSystem;
+﻿using BoardSystem;
 using System.Collections.Generic;
 
 namespace GameSystem.Models

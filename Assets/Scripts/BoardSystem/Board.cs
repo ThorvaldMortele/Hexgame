@@ -9,11 +9,11 @@ namespace BoardSystem
     public class Board<TPiece> where TPiece : class
     {
         private Dictionary<Position, Tile> _tiles = new Dictionary<Position, Tile>();   //a board has a list of tiles, in this case hexagons
-                                                                                                //dictionary is used so you dont have to cycle over all tiles
-                                                                                                //now u can get the tile based on the pos (the key)
+                                                                                        //dictionary is used so you dont have to cycle over all tiles
+                                                                                        //now u can get the tile based on the pos (the key)
 
         private List<TPiece> _values = new List<TPiece>();  //the pieces and tiles are split into keys and values because a dictionary can only go in one way
-        private List<Tile> _keys = new List<Tile>();  //and we need it to work in 2 ways
+        private List<Tile> _keys = new List<Tile>();        //and we need it to work in 2 ways
 
         public readonly int Radius;
 
