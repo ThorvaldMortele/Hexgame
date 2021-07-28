@@ -60,16 +60,11 @@ namespace GameSystem.Views
             //GameLoop.Instance.FindCardMovements();
         }
 
-        private void ModelHighlightStatusChanged(object sender, System.EventArgs e)
+        private void ModelHighlightStatusChanged(object sender, EventArgs e)
         {
             if (Model.IsHighlighted) _meshRenderer.material = _highlightMaterial;
 
             else _meshRenderer.material = _originalMaterial;
-        }
-
-        public void OnPointerClick(PointerEventData eventData)
-        {
-            GameLoop.Instance.Select(Model);
         }
 
         internal Vector3 Size
@@ -93,7 +88,6 @@ namespace GameSystem.Views
         }
 
         public static (float w, float h) PointyDimension(float size) => (Mathf.Sqrt(3f) * size, 2f * size);
-
 
         private void OnDestroy()
         {

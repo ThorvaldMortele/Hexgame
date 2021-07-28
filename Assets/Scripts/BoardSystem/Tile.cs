@@ -17,7 +17,7 @@ namespace BoardSystem
         public bool IsHighlighted
         {
             get => _isHighlighted;
-            internal set
+            set
             {
                 _isHighlighted = value;
                 OnHighlightStatusChanged(EventArgs.Empty);

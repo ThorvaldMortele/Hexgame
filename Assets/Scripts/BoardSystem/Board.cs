@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace BoardSystem
 {
-    public class Board<TPiece> where TPiece : class
+    public class Board<TPiece> where TPiece : class, IPiece
     {
         private Dictionary<Position, Tile> _tiles = new Dictionary<Position, Tile>();   //a board has a list of tiles, in this case hexagons
                                                                                         //dictionary is used so you dont have to cycle over all tiles
@@ -71,9 +71,13 @@ namespace BoardSystem
             var idx = _keys.IndexOf(fromTile);  //get the fromtile index in the list
             if (idx == -1) return;
 
-            if (PieceAt(toTile) != null) return;    //if theres already something on toTile dont go there since u cant
+            var toPiece = PieceAt(toTile);
+            if (toPiece != null) return;    //if theres already something on toTile dont go there since u cant
 
             _keys[idx] = toTile;
+
+            var piece = _values[idx];
+            piece.Moved(fromTile, toTile);
         }
 
         public void Place(Tile toTile, TPiece piece)

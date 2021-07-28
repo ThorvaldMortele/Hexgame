@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 7725497709186733952}
   - component: {fileID: 8754315312825793083}
   - component: {fileID: 5767157888169133405}
-  - component: {fileID: -5345378418429814992}
+  - component: {fileID: 4516517510226322439}
   m_Layer: 0
   m_Name: PieceBase
   m_TagString: Untagged
@@ -95,7 +95,7 @@ CapsuleCollider:
   m_Height: 2
   m_Direction: 1
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &-5345378418429814992
+--- !u!114 &4516517510226322439
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -104,6 +104,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 3014339910632630832}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d974851411f5ffd4ab6c61c7c73bbb97, type: 3}
+  m_Script: {fileID: 11500000, guid: 9b2cb0aacfef18b42b4de749f48bac38, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _isPlayer: 0
+  _positionHelper: {fileID: 11400000, guid: eacc2582fbed83941841a83ee18970cc, type: 2}

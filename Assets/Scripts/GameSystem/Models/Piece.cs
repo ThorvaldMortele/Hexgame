@@ -10,59 +10,37 @@ using UnityEngine.EventSystems;
 
 namespace GameSystem.Models
 {
-    public abstract class Piece : MonoBehaviour, IPointerClickHandler
+    public class PieceMovedEventArgs : EventArgs
     {
-        private List<Tile> _validTiles = new List<Tile>();
-
-        protected abstract List<Tile> FindValidTiles();
-
-        [SerializeField]
-        private PositionHelper _positionHelper;
-
-        public void OnPointerClick(PointerEventData eventData)
+        public Tile From { get; }
+        public Tile To { get; }
+        public PieceMovedEventArgs(Tile from, Tile to)
         {
-            Select();
+            From = from;
+            To = to;
+        }
+    }
+
+    public class Piece : IPiece
+    {
+        public event EventHandler<PieceMovedEventArgs> PieceMoved;
+
+        public bool IsPlayer { get; }
+
+        public Piece(bool isPlayer)
+        {
+            IsPlayer = isPlayer;
         }
 
-        public void Deselect()
+        void IPiece.Moved(Tile fromTile, Tile toTile)
         {
-            var board = GameLoop.Instance.Board;
-            board.UnHighlight(_validTiles);
-
-            _validTiles.Clear();
+            OnPieceMoved(new PieceMovedEventArgs(fromTile, toTile));
         }
 
-        public void Select()
+        protected virtual void OnPieceMoved(PieceMovedEventArgs arg)
         {
-            GameLoop.Instance.Select(this);
-
-            _validTiles = FindValidTiles();
-
-            var board = GameLoop.Instance.Board;
-            board.UnHighlight(_validTiles);
-        }
-
-        public bool Move(Tile toTile)
-        {
-            var board = GameLoop.Instance.Board;
-
-            if (!_validTiles.Contains(toTile)) return false;
-
-            var piece = board.PieceAt(toTile);
-            if (piece != null)
-            {
-                //piece.Capture();
-                board.Take(toTile);
-            }
-
-            var fromTile = board.TileOf(this);
-
-            board.Move(fromTile, toTile);
-
-            transform.position = _positionHelper.ToWorldPosition(toTile.Position);
-
-            return true;
-
+            EventHandler<PieceMovedEventArgs> handler = PieceMoved;
+            handler?.Invoke(this, arg);
         }
     }
 }
