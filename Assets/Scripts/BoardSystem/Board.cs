@@ -6,7 +6,8 @@ using System.Threading.Tasks;
 
 namespace BoardSystem
 {
-    public class Board<TPiece> where TPiece : class, IPiece
+    public class Board<TPiece, TCard> where TPiece : class, IPiece 
+                                      where TCard  : class, ICard
     {
         private Dictionary<Position, Tile> _tiles = new Dictionary<Position, Tile>();   //a board has a list of tiles, in this case hexagons
                                                                                         //dictionary is used so you dont have to cycle over all tiles
@@ -50,7 +51,6 @@ namespace BoardSystem
             if (idx == -1) return null;         //if theres no piece, return null
 
             return _keys[idx];                  //return the tile with the corresponding piece idx
-
         }
 
         public TPiece Take(Tile fromTile)

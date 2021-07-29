@@ -9,18 +9,17 @@ using System.Threading.Tasks;
 
 namespace GameSystem.MoveCommandProviders
 {
-    public class PlayerSweepMoveCommandProvider : IMoveCommandProvider<Piece>
+    public class PlayerSweepMoveCommandProvider : IMoveCommandProvider<Piece, Card>
     {
         public static readonly string Name = "SweepMove";
 
-        private List<IMoveCommand<Piece>> _commands = new List<IMoveCommand<Piece>>()
+        private List<IMoveCommand<Piece, Card>> _commands = new List<IMoveCommand<Piece, Card>>()
         {
             new PlayerMoveSweepCommand()
         };
-        public List<IMoveCommand<Piece>> MoveCommands()
+        public List<IMoveCommand<Piece, Card>> MoveCommands()
         {
             return _commands;
         }
-
     }
 }

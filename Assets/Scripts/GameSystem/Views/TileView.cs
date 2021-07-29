@@ -9,6 +9,7 @@ using UnityEngine.EventSystems;
 
 namespace GameSystem.Views
 {
+    [SelectionBase]
     public class TileView : MonoBehaviour
     {
         [SerializeField]

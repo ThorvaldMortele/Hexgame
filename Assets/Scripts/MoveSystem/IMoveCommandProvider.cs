@@ -7,8 +7,9 @@ using System.Threading.Tasks;
 
 namespace MoveSystem
 {
-    public interface IMoveCommandProvider<TPiece> where TPiece : class, IPiece
+    public interface IMoveCommandProvider<TPiece, TCard> where TPiece : class, IPiece
+                                                         where TCard  : class, ICard
     {
-        List<IMoveCommand<TPiece>> MoveCommands();
+        List<IMoveCommand<TPiece, TCard>> MoveCommands();
     }
 }

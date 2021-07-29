@@ -54,6 +54,5 @@ namespace GameSystem.Models
             EventHandler handler = EnemyTaken;
             handler?.Invoke(this, arg);
         }
-        
     }
 }

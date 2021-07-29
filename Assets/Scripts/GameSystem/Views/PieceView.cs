@@ -5,7 +5,7 @@ using UnityEngine.EventSystems;
 
 namespace GameSystem.Views
 {
-    public class PieceView : MonoBehaviour, IPointerClickHandler
+    public class PieceView : MonoBehaviour
     {
         public Piece Model { get => _model;
             internal set
@@ -42,22 +42,10 @@ namespace GameSystem.Views
         [SerializeField]
         private bool _isPlayer;
 
-        [SerializeField]
-        private string _movementName = null;
-
-        public string MovementName => _movementName;
-
         public bool IsPlayer => _isPlayer;
 
         [SerializeField]
         private PositionHelper _positionHelper = null;
-
-        public void OnPointerClick(PointerEventData eventData)
-        {
-            var board = GameLoop.Instance;
-            board.Select(Model);
-            Debug.Log("hit");
-        }
 
         private void OnDestroy()
         {

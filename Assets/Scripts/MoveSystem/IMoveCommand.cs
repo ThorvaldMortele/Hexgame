@@ -5,10 +5,11 @@ using UnityEngine;
 
 namespace MoveSystem
 {
-    public interface IMoveCommand<TPiece> where TPiece : class, IPiece
+    public interface IMoveCommand<TPiece, TCard> where TPiece : class, IPiece
+                                                 where TCard  : class, ICard
     {
-        List<Tile> Tiles(Board<TPiece> board, TPiece piece);
+        List<Tile> Tiles(Board<TPiece, TCard> board, TCard card);
 
-        void Execute(Board<TPiece> board, TPiece piece, Tile toTile);
+        void Execute(Board<TPiece, TCard> board, TCard card, Tile toTile);
     }
 }

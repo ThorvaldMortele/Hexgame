@@ -8,16 +8,16 @@ using System.Threading.Tasks;
 
 namespace GameSystem.Models.MoveCommands
 {
-    public class PlayerMoveSweepCommand : IMoveCommand<Piece>
+    public class PlayerMoveSweepCommand : IMoveCommand<Piece, Card>
     {
-        public List<Tile> Tiles(Board<Piece> board, Piece piece)
+        public List<Tile> Tiles(Board<Piece, Card> board, Card card)
         {
             var validtiles = new List<Tile>();
 
             return validtiles;
         }
 
-        public void Execute(Board<Piece> board, Piece piece, Tile toTile)
+        public void Execute(Board<Piece, Card> board, Card card, Tile toTile)   //pretty much take and move or just move
         {
             var toPiece = board.PieceAt(toTile);
             if (toPiece != null)
@@ -25,10 +25,9 @@ namespace GameSystem.Models.MoveCommands
                 board.Take(toTile);
             }
 
-            var fromTile = board.TileOf(piece);
+            var playerTile = GameLoop.Instance.FindPlayerTile();
 
-            board.Move(fromTile, toTile);
+            board.Move(playerTile, toTile);
         }
     }
-
 }
