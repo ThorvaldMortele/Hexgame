@@ -10,12 +10,25 @@ namespace GameSystem.Views
         public Piece Model { get => _model;
             internal set
             {
-                if (_model != null) _model.PieceMoved -= ModelMoved;
-
+                if (_model != null)
+                {
+                    _model.PieceMoved -= ModelMoved;
+                    _model.EnemyTaken -= Modeltaken;
+                }
+                    
                 _model = value;
 
-                if (_model != null) _model.PieceMoved += ModelMoved;
+                if (_model != null)
+                {
+                    _model.PieceMoved += ModelMoved;
+                    _model.EnemyTaken += Modeltaken;
+                }  
             }
+        }
+
+        private void Modeltaken(object sender, EventArgs e)
+        {
+            Destroy(this.gameObject);
         }
 
         private void ModelMoved(object sender, PieceMovedEventArgs e)
@@ -31,6 +44,8 @@ namespace GameSystem.Views
 
         [SerializeField]
         private string _movementName = null;
+
+        public string MovementName => _movementName;
 
         public bool IsPlayer => _isPlayer;
 

@@ -63,6 +63,8 @@ namespace BoardSystem
             _values.RemoveAt(idx);  //remove the piece from the piecelist
             _keys.RemoveAt(idx);    //remove the tile from the tilelist
 
+            piece.Taken();
+
             return piece;
         }
 

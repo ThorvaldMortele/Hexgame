@@ -473,7 +473,7 @@ PrefabInstance:
     - target: {fileID: 6288116532367469205, guid: a2b7840e022cf614786f1aa590f038c0,
         type: 3}
       propertyPath: _movementName
-      value: Move1
+      value: MoveSweep
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a2b7840e022cf614786f1aa590f038c0, type: 3}

@@ -24,6 +24,7 @@ namespace GameSystem.Models
     public class Piece : IPiece
     {
         public event EventHandler<PieceMovedEventArgs> PieceMoved;
+        public event EventHandler EnemyTaken;
 
         public bool IsPlayer { get; }
 
@@ -37,10 +38,22 @@ namespace GameSystem.Models
             OnPieceMoved(new PieceMovedEventArgs(fromTile, toTile));
         }
 
+        void IPiece.Taken()
+        {
+            OnEnemyTaken(EventArgs.Empty);
+        }
+
         protected virtual void OnPieceMoved(PieceMovedEventArgs arg)
         {
             EventHandler<PieceMovedEventArgs> handler = PieceMoved;
             handler?.Invoke(this, arg);
         }
+
+        protected virtual void OnEnemyTaken(EventArgs arg)
+        {
+            EventHandler handler = EnemyTaken;
+            handler?.Invoke(this, arg);
+        }
+        
     }
 }

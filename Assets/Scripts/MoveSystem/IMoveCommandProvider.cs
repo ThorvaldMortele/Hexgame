@@ -9,6 +9,6 @@ namespace MoveSystem
 {
     public interface IMoveCommandProvider<TPiece> where TPiece : class, IPiece
     {
-        List<IMoveCommandProvider<TPiece>> MoveCommands();
+        List<IMoveCommand<TPiece>> MoveCommands();
     }
 }
