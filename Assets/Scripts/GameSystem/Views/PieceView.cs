@@ -34,7 +34,7 @@ namespace GameSystem.Views
         private void ModelMoved(object sender, PieceMovedEventArgs e)
         {
             var worldPos = _positionHelper.ToWorldPosition(e.To.Position);
-            transform.position = worldPos;
+            transform.position = new Vector3(worldPos.x, 1.25f, worldPos.z);
         }
 
         private Piece _model;

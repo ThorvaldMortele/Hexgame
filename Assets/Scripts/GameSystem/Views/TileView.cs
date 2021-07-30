@@ -97,17 +97,23 @@ namespace GameSystem.Views
 
         public void OnPointerEnter(PointerEventData eventData)
         {
-            var board = GameLoop.Instance.Board;
-            
-            var _hoveredTile = GameLoop.Instance.GetHoveredTile(board, _positionHelper, this.transform);    //get the new one
+            if (GameLoop.Instance.SelectedCard != null) //only works in the beginning
+            {
+                var board = GameLoop.Instance.Board;
 
-            //if its not part of the validtiles list
-            board.HighlightOne(_hoveredTile);   //highlight the new one
+                var _hoveredTile = GameLoop.Instance.GetHoveredTile(board, _positionHelper, this.transform);    //get the new one
+
+                //if its not part of the validtiles list
+                board.HighlightOne(_hoveredTile);   //highlight the new one
+            }
         }
 
         public void OnDrop(PointerEventData eventData)
         {
-            throw new NotImplementedException();
+            var board = GameLoop.Instance.Board;
+            var _hoveredTile = GameLoop.Instance.GetHoveredTile(board, _positionHelper, this.transform);
+
+            GameLoop.Instance.SelectActivate(_hoveredTile);
         }
 
         public void OnPointerExit(PointerEventData eventData)

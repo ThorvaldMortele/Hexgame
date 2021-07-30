@@ -1,5 +1,6 @@
 ﻿using BoardSystem;
 using GameSystem.Models;
+using GameSystem.Utils;
 using MoveSystem;
 using System;
 using System.Collections.Generic;
@@ -9,12 +10,15 @@ using System.Threading.Tasks;
 
 namespace GameSystem.MoveCommands
 {
+    [MoveCommand(Name)]
     public class PlayerMoveTeleportCommand : AbstractMoveCommand
     {
-
+        public const string Name = "TeleportMove";
         public override List<Tile> Tiles(Board<Piece, Card> board, Card card)
         {
-            return default; //use BFS to get the tiles
+            var validtiles = new List<Tile>();
+
+            return validtiles;
         }
     }
 }

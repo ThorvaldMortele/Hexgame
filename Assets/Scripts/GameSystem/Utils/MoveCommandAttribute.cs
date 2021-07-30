@@ -6,11 +6,11 @@ using System.Threading.Tasks;
 
 namespace GameSystem.Utils
 {
-    public class MoveCommandProviderAttribute : Attribute
+    public class MoveCommandAttribute : Attribute
     {
         public string Name;
 
-        public MoveCommandProviderAttribute(string name)
+        public MoveCommandAttribute(string name)
         {
             Name = name;
         }

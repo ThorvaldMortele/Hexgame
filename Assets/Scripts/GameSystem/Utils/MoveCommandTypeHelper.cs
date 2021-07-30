@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace GameSystem.Utils
 {
-    public class MoveCommandProviderTypeHelper
+    public class MoveCommandTypeHelper
     {
         public static string[] _movementNames = new string[0];
 
@@ -30,7 +30,7 @@ namespace GameSystem.Utils
             {
                 foreach (var type in assembly.GetTypes())
                 {
-                    var attribute = type.GetCustomAttribute<MoveCommandProviderAttribute>();
+                    var attribute = type.GetCustomAttribute<MoveCommandAttribute>();
                     if (attribute != null)
                     {
                         types.Add(attribute.Name);

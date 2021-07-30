@@ -1,6 +1,7 @@
 ﻿using BoardSystem;
 using GameSystem.Models;
 using GameSystem.Models.MoveCommands;
+using GameSystem.Utils;
 using MoveSystem;
 using System;
 using System.Collections.Generic;
@@ -10,8 +11,10 @@ using System.Threading.Tasks;
 
 namespace GameSystem.MoveCommands
 {
+    [MoveCommand(Name)]
     public class PlayerMovePushCommand : AbstractMoveCommand
     {
+        public const string Name = "PushMove";
         public override List<Tile> Tiles(Board<Piece, Card> board, Card card)
         {
             var validTiles = new MovementHelper(board, card)
@@ -22,5 +25,6 @@ namespace GameSystem.MoveCommands
 
             return validTiles;
         }
+
     }
 }

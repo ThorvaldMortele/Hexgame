@@ -22,7 +22,7 @@ namespace GameSystem.Editors
             var _movementNameSp = serializedObject.FindProperty("_movementName");
             var movementName = _movementNameSp.stringValue;
 
-            var typeNames = MoveCommandProviderTypeHelper.FindMoveCommandProviderTypes();
+            var typeNames = MoveCommandTypeHelper.FindMoveCommandProviderTypes();
             var selectedIdx = Array.IndexOf(typeNames, movementName);
 
             var newSelectedIdx = EditorGUILayout.Popup("Movement", selectedIdx, typeNames);

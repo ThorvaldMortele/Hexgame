@@ -71,13 +71,13 @@ namespace GameSystem.Views
 
             SetDraggedPosition(eventData);
 
-            ShowAvailableTiles(ModelCard, ModelMove);
+            ShowAllAvailableTiles(ModelCard, ModelMove);
 
         }
 
-        public void ShowAvailableTiles(Card modelcard, IMoveCommand<Piece, Card> Modelmove)  //toont niks van all validtiles wanneer een kaart geselecteerd word
+        public void ShowAllAvailableTiles(Card modelcard, IMoveCommand<Piece, Card> Modelmove)  //toont alle validtiles die mogelijk kunnen zijn voor die move
         {
-            GameLoop.Instance.Select(modelcard, Modelmove);
+            GameLoop.Instance.Select(modelcard);
         }
 
         public void OnDrag(PointerEventData eventData)

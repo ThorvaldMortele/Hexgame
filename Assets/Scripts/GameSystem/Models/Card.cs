@@ -1,4 +1,5 @@
 ﻿using BoardSystem;
+using MoveSystem;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,6 +21,13 @@ namespace GameSystem.Models
     public class Card : ICard
     {
         public event EventHandler<CardDroppedEventArgs> CardDropped;
+
+        //public string Name;
+
+        public Card(/*string name*/)
+        {
+            //Name = name;
+        }
 
         void ICard.CanDrop(Tile droppedTile)
         {
