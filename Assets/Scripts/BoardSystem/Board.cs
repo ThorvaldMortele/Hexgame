@@ -109,7 +109,7 @@ namespace BoardSystem
             }
         }
 
-        public void Highlight(List<Tile> tiles)
+        public void HighlightAll(List<Tile> tiles)
         {
             foreach (var tile in tiles)
             {
@@ -117,12 +117,22 @@ namespace BoardSystem
             }
         }
 
-        public void UnHighlight(List<Tile> tiles)
+        public void HighlightOne(Tile tile)
+        {
+            tile.IsHighlighted = true;
+        }
+
+        public void UnHighlightAll(List<Tile> tiles)
         {
             foreach (var tile in tiles)
             {
                 tile.IsHighlighted = false;
             }
+        }
+
+        public void UnHighlightOne(Tile tile)
+        {
+            tile.IsHighlighted = false;
         }
     }
 }

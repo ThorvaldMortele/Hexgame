@@ -14,12 +14,10 @@ public class GameLoop : SingletonMonoBehaviour<GameLoop>
 {
     [SerializeField]
     private PositionHelper _positionHelper;
+
     public PositionHelper PositionHelper => _positionHelper;
 
     public Board<Piece, Card> Board { get; } = new Board<Piece, Card>(3);
-
-    private Piece _selectedPiece = null;
-    public Piece SelectedPiece => _selectedPiece;
 
     private Card _selectedCard = null;
     public Card SelectedCard => _selectedCard;
@@ -33,7 +31,10 @@ public class GameLoop : SingletonMonoBehaviour<GameLoop>
     {
         MoveManager = new MoveManager<Piece, Card>(Board);
 
-        //Movemanager.Register(PawnMoveCommandProvider.Name, new PawnMoveCommandProvider());
+        MoveManager.Register(PlayerSweepMoveCommandProvider.Name, new PlayerSweepMoveCommandProvider());
+        MoveManager.Register(PlayerMoveAxialCommandProvider.Name, new PlayerMoveAxialCommandProvider());
+        MoveManager.Register(PlayerMovePushCommandProvider.Name, new PlayerMovePushCommandProvider());
+        MoveManager.Register(PlayerMoveTeleportCommandProvider.Name, new PlayerMoveTeleportCommandProvider());
     }
 
     private void Start()
@@ -97,6 +98,18 @@ public class GameLoop : SingletonMonoBehaviour<GameLoop>
         }
         return null;
     }
+    public Tile GetHoveredTile(Board<Piece, Card> board, PositionHelper positionHelper, Transform trans)
+    {
+        var worldPosition = trans.position;
+        var boardPosition = positionHelper.ToBoardPosition(worldPosition);
+
+        var hoveredTile = board.TileAt(boardPosition);
+
+        return hoveredTile;
+    }
+
+
+
     //public Tile FindHoverTile() // pretty taxing, should be done differently, but will do for now
     //{
     //    var tileViews = FindObjectsOfType<TileView>();
@@ -151,7 +164,7 @@ public class GameLoop : SingletonMonoBehaviour<GameLoop>
         // 2) find all possible tiles to use the card on
         //    => MoveManager / MovementHelper (fix)
 
-        Board.UnHighlight(MoveManager.Tiles());
+        Board.UnHighlightAll(MoveManager.Tiles());
 
         MoveManager.Deactivate();
 
@@ -160,7 +173,7 @@ public class GameLoop : SingletonMonoBehaviour<GameLoop>
 
         MoveManager.Activate(card);
 
-        Board.Highlight(MoveManager.Tiles());
+        Board.HighlightAll(MoveManager.Tiles());
     }
 
 
@@ -192,10 +205,4 @@ public class GameLoop : SingletonMonoBehaviour<GameLoop>
             MoveManager.Execute(_selectedCard, tile);
         }
     }
-
-    //protected virtual void OnInitialized(EventArgs arg)  // FOR LATER VIDEO
-    //{
-    //    EventHandler handler = Initialized;
-    //    handler?.Invoke(this, arg);
-    //}
 }

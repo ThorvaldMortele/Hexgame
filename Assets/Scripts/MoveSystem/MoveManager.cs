@@ -51,7 +51,6 @@ namespace MoveSystem
         {
             _activeProvider = Provider(card);
             _validTiles = _activeProvider.MoveCommands().SelectMany((command) => command.Tiles(_board, card)).ToList();  //find the valid tiles for it
-            //TODO: call something to find the validtiles for that move
         }
 
         public void Execute(TCard card, Tile tile)

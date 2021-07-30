@@ -1,5 +1,7 @@
 ﻿using GameSystem.Models;
 using GameSystem.Models.MoveCommands;
+using GameSystem.MoveCommands;
+using GameSystem.Utils;
 using MoveSystem;
 using System;
 using System.Collections.Generic;
@@ -9,17 +11,13 @@ using System.Threading.Tasks;
 
 namespace GameSystem.MoveCommandProviders
 {
-    public class PlayerSweepMoveCommandProvider : IMoveCommandProvider<Piece, Card>
+    [MoveCommandProvider(Name)]
+    public class PlayerSweepMoveCommandProvider : AbstractMoveCommandProvider
     {
-        public static readonly string Name = "SweepMove";
+        public const string Name = "SweepMove";
 
-        private List<IMoveCommand<Piece, Card>> _commands = new List<IMoveCommand<Piece, Card>>()
+        public PlayerSweepMoveCommandProvider() : base(new PlayerMoveSweepCommand())
         {
-            new PlayerMoveSweepCommand()
-        };
-        public List<IMoveCommand<Piece, Card>> MoveCommands()
-        {
-            return _commands;
         }
     }
 }

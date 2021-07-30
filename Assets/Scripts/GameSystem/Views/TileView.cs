@@ -10,7 +10,7 @@ using UnityEngine.EventSystems;
 namespace GameSystem.Views
 {
     [SelectionBase]
-    public class TileView : MonoBehaviour
+    public class TileView : MonoBehaviour, IDropHandler, IPointerEnterHandler, IPointerExitHandler
     {
         [SerializeField]
         private Material _highlightMaterial = null;
@@ -93,6 +93,29 @@ namespace GameSystem.Views
         private void OnDestroy()
         {
             Model = null;   //this makes it so we dont call a method on a view that has been destroyed already 
+        }
+
+        public void OnPointerEnter(PointerEventData eventData)
+        {
+            var board = GameLoop.Instance.Board;
+            
+            var _hoveredTile = GameLoop.Instance.GetHoveredTile(board, _positionHelper, this.transform);    //get the new one
+
+            //if its not part of the validtiles list
+            board.HighlightOne(_hoveredTile);   //highlight the new one
+        }
+
+        public void OnDrop(PointerEventData eventData)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void OnPointerExit(PointerEventData eventData)
+        {
+            var board = GameLoop.Instance.Board;
+            var _hoveredTile = GameLoop.Instance.GetHoveredTile(board, _positionHelper, this.transform);
+
+            board.UnHighlightOne(_hoveredTile);     //unhighlight the previous tile
         }
     }
 }

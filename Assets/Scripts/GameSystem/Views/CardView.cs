@@ -127,7 +127,7 @@ namespace GameSystem.Views
 
         private void CardModelDropped(object sender, CardDroppedEventArgs e)
         {
-
+            
         }
     }
 }

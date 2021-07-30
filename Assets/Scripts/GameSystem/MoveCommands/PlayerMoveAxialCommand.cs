@@ -9,13 +9,11 @@ using System.Threading.Tasks;
 
 namespace GameSystem.MoveCommands
 {
-    public class PlayerMoveSweepCommand : AbstractMoveCommand
+    public class PlayerMoveAxialCommand : AbstractMoveCommand
     {
         public override List<Tile> Tiles(Board<Piece, Card> board, Card card)
         {
-            var validtiles = new List<Tile>();
-
-            return validtiles;
+            return default;
         }
     }
 }
