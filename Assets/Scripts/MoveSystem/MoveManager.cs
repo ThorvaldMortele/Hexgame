@@ -10,10 +10,10 @@ namespace MoveSystem
     public class MoveManager<TPiece, TCard> where TPiece : class, IPiece
                                             where TCard  : class, ICard
     {
-        private Dictionary<string, IMoveCommand<TPiece, TCard>> _providers = new Dictionary<string, IMoveCommand<TPiece, TCard>>();
-        private Dictionary<TCard, string> _pieceMovements = new Dictionary<TCard, string>();
+        private Dictionary<string, IMoveCommand<TPiece, TCard>> _commands = new Dictionary<string, IMoveCommand<TPiece, TCard>>();
+        private Dictionary<TCard, string> _playerMovements = new Dictionary<TCard, string>();
 
-        private IMoveCommand<TPiece, TCard> _activeProvider;
+        private IMoveCommand<TPiece, TCard> _activeCommand;
         private Board<TPiece, TCard> _board;
 
         private List<Tile> _validTiles = new List<Tile>();
@@ -25,44 +25,50 @@ namespace MoveSystem
 
         public void Register(string name, IMoveCommand<TPiece, TCard> command)
         {
-            if (_providers.ContainsKey(name)) return;
+            if (_commands.ContainsKey(name)) return;
 
-            _providers.Add(name, command);
+            _commands.Add(name, command);
         }
 
         public void Register(TCard card, string name)
         {
-            if (_pieceMovements.ContainsKey(card)) return;
+            if (_playerMovements.ContainsKey(card)) return;
 
-            _pieceMovements.Add(card, name);
+            _playerMovements.Add(card, name);
         }
 
         public IMoveCommand<TPiece, TCard> Provider(TCard card)
         {
-            if (_pieceMovements.TryGetValue(card, out var name))   //checks for a corresponding piece with a move
+            if (_playerMovements.TryGetValue(card, out var name))   //checks for a corresponding piece with a move
             {
-                if (_providers.TryGetValue(name, out var moveCommand)) return moveCommand;  //checks if a name is associated with a move
+                if (_commands.TryGetValue(name, out var moveCommand)) return moveCommand;  //checks if a name is associated with a move
             }
             return null;
         }
 
-        public void Activate(TCard card)
+        public void Activate(TCard card, Tile hoveredTile)
         {
-            _activeProvider = Provider(card);
-            _validTiles = _activeProvider.Tiles(_board, card);
+            _activeCommand = Provider(card);
+            _validTiles = _activeCommand.Tiles(_board, card, hoveredTile);
         }
+
+        //public void Activate(TCard card)
+        //{
+        //    _activeCommand = Provider(card);
+        //    _validTiles = _activeCommand.Tiles(_board);
+        //}
 
         public void Execute(TCard card, Tile tile)
         {
             if (_validTiles.Contains(tile))
             {
-                var moveCommand = _activeProvider;
+                var moveCommand = _activeCommand;
 
                 if (moveCommand != null)
                 {
                     moveCommand.Execute(_board, card, tile);
 
-                    _activeProvider = null;
+                    _activeCommand = null;
                 }
             }
         }
@@ -70,7 +76,7 @@ namespace MoveSystem
         public void Deactivate()
         {
             _validTiles.Clear();
-            _activeProvider = null;
+            _activeCommand = null;
         }
 
         public List<Tile> Tiles()

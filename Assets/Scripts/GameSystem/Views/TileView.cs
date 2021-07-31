@@ -97,12 +97,22 @@ namespace GameSystem.Views
 
         public void OnPointerEnter(PointerEventData eventData)
         {
-            if (GameLoop.Instance.SelectedCard != null) //only works in the beginning
+            var board = GameLoop.Instance.Board;
+            var _hoveredTile = GameLoop.Instance.GetHoveredTile(board, _positionHelper, this.transform);    //get the new one
+
+            var selectedcard = GameLoop.Instance.SelectedCard;
+            GameLoop.Instance.MoveManager.Activate(selectedcard, _hoveredTile);
+
+            var validTiles = GameLoop.Instance.MoveManager.Tiles();
+
+            
+
+            board.UnHighlightAll(validTiles);
+
+            
+
+            if (GameLoop.Instance.SelectedCard != null && validTiles.Contains(_hoveredTile)) //if the hoveredtile is part of the validtiles list
             {
-                var board = GameLoop.Instance.Board;
-
-                var _hoveredTile = GameLoop.Instance.GetHoveredTile(board, _positionHelper, this.transform);    //get the new one
-
                 //if its not part of the validtiles list
                 board.HighlightOne(_hoveredTile);   //highlight the new one
             }

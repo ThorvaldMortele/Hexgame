@@ -58,7 +58,7 @@ public class GameLoop : SingletonMonoBehaviour<GameLoop>
         var cardViews = FindObjectsOfType<CardView>();
         foreach (var cardView in cardViews)
         {
-            var card = new Card(/*cardView.MovementName*/);
+            var card = new Card();
 
             MoveManager.Register(card, cardView.MovementName);
 
@@ -94,19 +94,36 @@ public class GameLoop : SingletonMonoBehaviour<GameLoop>
         return hoveredTile;
     }
 
-    public void Select(Card card)
-    {
-        //MoveManager.Activate(card);
+    //public void Select(Card card)
+    //{
+    //    Board.UnHighlightAll(MoveManager.Tiles());
 
+    //    MoveManager.Deactivate();
+
+    //    _selectedCard = card;
+
+    //    MoveManager.Activate(card);
+
+    //    Board.HighlightAll(MoveManager.Tiles());
+    //}
+
+    public void Select(Card card, Tile hoveredTile)
+    {
         Board.UnHighlightAll(MoveManager.Tiles());
 
         MoveManager.Deactivate();
 
         _selectedCard = card;
 
-        MoveManager.Activate(card);
+        MoveManager.Activate(card, hoveredTile);
 
         Board.HighlightAll(MoveManager.Tiles());
+    }
+
+    public void ShowAllAvailableTiles(Card modelcard)  //toont alle validtiles die mogelijk kunnen zijn voor die move
+    {
+        Select(modelcard, GetHoveredTile(Board, PositionHelper, ));
+        //find a way to get the hoveredtile here, u can try to find the tileview transform and use the gethoveredtile method, or u dont use it and do it another way
     }
 
     public void SelectActivate(Tile tile) // dropping

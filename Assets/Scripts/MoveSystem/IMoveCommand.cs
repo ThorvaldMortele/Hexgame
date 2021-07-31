@@ -8,7 +8,7 @@ namespace MoveSystem
     public interface IMoveCommand<TPiece, TCard> where TPiece : class, IPiece
                                                  where TCard  : class, ICard
     {
-        List<Tile> Tiles(Board<TPiece, TCard> board, TCard card);
+        List<Tile> Tiles(Board<TPiece, TCard> board, TCard card, Tile hoveredTile);
 
         void Execute(Board<TPiece, TCard> board, TCard card, Tile toTile);
     }

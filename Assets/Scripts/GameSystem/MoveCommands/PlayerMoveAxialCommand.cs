@@ -15,7 +15,7 @@ namespace GameSystem.MoveCommands
     {
         public const string Name = "AxialMove";
 
-        public override List<Tile> Tiles(Board<Piece, Card> board, Card card)
+        public override List<Tile> Tiles(Board<Piece, Card> board, Card card, Tile hoveredTile)
         {
             var validtiles = new List<Tile>();
 

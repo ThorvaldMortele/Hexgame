@@ -19,8 +19,6 @@ namespace GameSystem.Views
         private GameObject m_DraggingIcon;
         private RectTransform m_DraggingPlane;
 
-        public IMoveCommand<Piece, Card> ModelMove { get; set; }
-
         [SerializeField]
         private string _movementName = null;
         public string MovementName => _movementName;
@@ -71,14 +69,10 @@ namespace GameSystem.Views
 
             SetDraggedPosition(eventData);
 
-            ShowAllAvailableTiles(ModelCard, ModelMove);
-
+            GameLoop.Instance.ShowAllAvailableTiles(ModelCard);
         }
 
-        public void ShowAllAvailableTiles(Card modelcard, IMoveCommand<Piece, Card> Modelmove)  //toont alle validtiles die mogelijk kunnen zijn voor die move
-        {
-            GameLoop.Instance.Select(modelcard);
-        }
+        
 
         public void OnDrag(PointerEventData eventData)
         {
