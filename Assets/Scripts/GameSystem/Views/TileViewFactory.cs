@@ -21,8 +21,6 @@ namespace GameSystem.Views
             tileView.Size = _positionHelper.TileSize;
             tileView.name = $"Tile{tile.Position.X} {tile.Position.Y} {tile.Position.Z}";
 
-            //tileView.Model = tile;
-
             return tileView;
         }
     }

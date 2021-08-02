@@ -22,11 +22,8 @@ namespace GameSystem.Models
     {
         public event EventHandler<CardDroppedEventArgs> CardDropped;
 
-        //public string Name;
-
-        public Card(/*string name*/)
+        public Card()
         {
-            //Name = name;
         }
 
         void ICard.CanDrop(Tile droppedTile)

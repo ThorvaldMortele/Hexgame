@@ -15,7 +15,7 @@ namespace GameSystem.MoveCommands
     public class PlayerMovePushCommand : AbstractMoveCommand
     {
         public const string Name = "PushMove";
-        public override List<Tile> Tiles(Board<Piece, Card> board, Card card, Tile hoveredTile)
+        public override List<Tile> Tiles(Board<Piece, Card> board, Card card)
         {
 
             //if hoveredtile is northwest and in validtiles then show the other 2
@@ -24,23 +24,26 @@ namespace GameSystem.MoveCommands
 
             //...
 
-            var validTiles = new MovementHelper(board, card)
-                .NorthEast(1)
-                .East(1)
-                .SouthEast(1)
-                .SouthWest(1)
-                .West(1)
-                .NorthWest(1)
-                .GenerateTiles();
+            //var validTiles = new MovementHelper(board, card)
+            //    .NorthEast(1)
+            //    .East(1)
+            //    .SouthEast(1)
+            //    .SouthWest(1)
+            //    .West(1)
+            //    .NorthWest(1)
+            //    .GenerateTiles();
 
-            if (!validTiles.Contains(hoveredTile))
-            {
-                return validTiles;
-            }
-            else if (validTiles.Contains(hoveredTile))
+            //if (!validTiles.Contains(hoveredTile))
+            //{
+            //    return validTiles;
+            //}
+            //else if (validTiles.Contains(hoveredTile))
 
 
-            return validTiles;
+            //return validTiles;
+
+            var validtiles = new List<Tile>();
+            return validtiles;
         }
 
     }

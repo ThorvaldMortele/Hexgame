@@ -1,4 +1,5 @@
-﻿using GameSystem.Models;
+﻿using BoardSystem;
+using GameSystem.Models;
 using MoveSystem;
 using System;
 using System.Collections.Generic;
@@ -84,6 +85,18 @@ namespace GameSystem.Views
         {
             if (m_DraggingIcon != null)
                 Destroy(m_DraggingIcon);
+
+            var tileViews = FindObjectsOfType<TileView>();
+            var tiles = new List<Tile>();
+
+            foreach (var tileV in tileViews)
+            {
+                tiles.Add(tileV.Model);
+            }
+
+            var board = GameLoop.Instance.Board;
+
+            board.UnHighlightAll(tiles);
         }
 
         private void SetDraggedPosition(PointerEventData data)

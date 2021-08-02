@@ -97,41 +97,35 @@ namespace GameSystem.Views
 
         public void OnPointerEnter(PointerEventData eventData)
         {
-            var board = GameLoop.Instance.Board;
-            var _hoveredTile = GameLoop.Instance.GetHoveredTile(board, _positionHelper, this.transform);    //get the new one
+            GameLoop.Instance.HoveredTile = this.Model; //assign the hoveredtile
 
-            var selectedcard = GameLoop.Instance.SelectedCard;
-            GameLoop.Instance.MoveManager.Activate(selectedcard, _hoveredTile);
+            var board = GameLoop.Instance.Board;    //get the board
 
-            var validTiles = GameLoop.Instance.MoveManager.Tiles();
+            var oldValidTiles = GameLoop.Instance.MoveManager.Tiles(); //assign the validtiles in this variable
 
-            
+            board.UnHighlightAll(oldValidTiles);   //unhighlight them all
 
-            board.UnHighlightAll(validTiles);
+            var selectedcard = GameLoop.Instance.SelectedCard;  //get the selected card and load the valid tiles
+            GameLoop.Instance.MoveManager.Activate(selectedcard);
 
-            
+            var newValidTiles = GameLoop.Instance.MoveManager.Tiles(); //assign the validtiles in this variable
 
-            if (GameLoop.Instance.SelectedCard != null && validTiles.Contains(_hoveredTile)) //if the hoveredtile is part of the validtiles list
+            if (GameLoop.Instance.SelectedCard != null && newValidTiles.Contains(GameLoop.Instance.HoveredTile)) //if the hoveredtile is part of the validtiles list
             {
-                //if its not part of the validtiles list
-                board.HighlightOne(_hoveredTile);   //highlight the new one
+                board.HighlightAll(newValidTiles);   //highlight the new one
             }
         }
 
         public void OnDrop(PointerEventData eventData)
         {
-            var board = GameLoop.Instance.Board;
-            var _hoveredTile = GameLoop.Instance.GetHoveredTile(board, _positionHelper, this.transform);
-
-            GameLoop.Instance.SelectActivate(_hoveredTile);
+            GameLoop.Instance.SelectActivate(GameLoop.Instance.HoveredTile);
         }
 
         public void OnPointerExit(PointerEventData eventData)
         {
             var board = GameLoop.Instance.Board;
-            var _hoveredTile = GameLoop.Instance.GetHoveredTile(board, _positionHelper, this.transform);
 
-            board.UnHighlightOne(_hoveredTile);     //unhighlight the previous tile
+            board.UnHighlightOne(GameLoop.Instance.HoveredTile);     //unhighlight the previous tile
         }
     }
 }

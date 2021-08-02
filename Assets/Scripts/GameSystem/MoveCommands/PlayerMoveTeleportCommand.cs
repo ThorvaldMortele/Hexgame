@@ -1,5 +1,6 @@
 ﻿using BoardSystem;
 using GameSystem.Models;
+using GameSystem.Models.MoveCommands;
 using GameSystem.Utils;
 using MoveSystem;
 using System;
@@ -14,13 +15,18 @@ namespace GameSystem.MoveCommands
     public class PlayerMoveTeleportCommand : AbstractMoveCommand
     {
         public const string Name = "TeleportMove";
-        public override List<Tile> Tiles(Board<Piece, Card> board, Card card, Tile hoveredTile)
+
+        public override List<Tile> Tiles(Board<Piece, Card> board, Card card)
         {
             List<Tile> NeighbourStrategy(Tile centerTile) => Neighbours(centerTile, board);
 
             float DistanceStrategy(Tile fromTile, Tile toTile) => Distance(fromTile, toTile);
 
             var bfs = new BreadthFirstAreaSearch<Tile>(NeighbourStrategy, DistanceStrategy);
+
+            //var validtiles = new MovementHelper(board, card)
+            //    .GenerateTiles();
+
             var tiles = bfs.Area(GameLoop.Instance.FindPlayerTile(), 9f);
 
             foreach (Tile validtile in tiles.ToList())  //this gets rid of all the tiles in which there's a piece

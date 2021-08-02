@@ -23,6 +23,9 @@ public class GameLoop : SingletonMonoBehaviour<GameLoop>
 
     public MoveManager<Piece, Card> MoveManager { get; internal set; }
 
+    public Tile HoveredTile;
+
+
     private void Awake()
     {
         MoveManager = new MoveManager<Piece, Card>(Board);
@@ -84,30 +87,7 @@ public class GameLoop : SingletonMonoBehaviour<GameLoop>
         return null;
     }
 
-    public Tile GetHoveredTile(Board<Piece, Card> board, PositionHelper positionHelper, Transform trans)
-    {
-        var worldPosition = trans.position;
-        var boardPosition = positionHelper.ToBoardPosition(worldPosition);
-
-        var hoveredTile = board.TileAt(boardPosition);
-
-        return hoveredTile;
-    }
-
-    //public void Select(Card card)
-    //{
-    //    Board.UnHighlightAll(MoveManager.Tiles());
-
-    //    MoveManager.Deactivate();
-
-    //    _selectedCard = card;
-
-    //    MoveManager.Activate(card);
-
-    //    Board.HighlightAll(MoveManager.Tiles());
-    //}
-
-    public void Select(Card card, Tile hoveredTile)
+    public void Select(Card card)
     {
         Board.UnHighlightAll(MoveManager.Tiles());
 
@@ -115,15 +95,14 @@ public class GameLoop : SingletonMonoBehaviour<GameLoop>
 
         _selectedCard = card;
 
-        MoveManager.Activate(card, hoveredTile);
+        MoveManager.Activate(card);
 
         Board.HighlightAll(MoveManager.Tiles());
     }
 
     public void ShowAllAvailableTiles(Card modelcard)  //toont alle validtiles die mogelijk kunnen zijn voor die move
     {
-        Select(modelcard, GetHoveredTile(Board, PositionHelper, ));
-        //find a way to get the hoveredtile here, u can try to find the tileview transform and use the gethoveredtile method, or u dont use it and do it another way
+        Select(modelcard);
     }
 
     public void SelectActivate(Tile tile) // dropping

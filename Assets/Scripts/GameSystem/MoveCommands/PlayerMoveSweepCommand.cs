@@ -1,5 +1,6 @@
 ﻿using BoardSystem;
 using GameSystem.Models;
+using GameSystem.Models.MoveCommands;
 using GameSystem.Utils;
 using MoveSystem;
 using System;
@@ -14,12 +15,74 @@ namespace GameSystem.MoveCommands
     public class PlayerMoveSweepCommand : AbstractMoveCommand
     {
         public const string Name = "SweepMove";
-        public override List<Tile> Tiles(Board<Piece, Card> board, Card card, Tile hoveredTile)
+        public override List<Tile> Tiles(Board<Piece, Card> board, Card card)
         {
-            var validtiles = new List<Tile>();
+            var hoveredTile = GameLoop.Instance.HoveredTile;
+
+            var validtiles = new MovementHelper(board, card)
+                .GenerateTiles();
+
+            if (new MovementHelper(board, card).East(1).GenerateTiles().Contains(hoveredTile))
+            {
+                validtiles.AddRange(new MovementHelper(board, card)
+                    .East(1)
+                    .NorthEast(1)
+                    .SouthEast(1)
+                    .GenerateTiles());
+            }
+            else if (new MovementHelper(board, card).NorthEast(1).GenerateTiles().Contains(hoveredTile))
+            {
+                validtiles.AddRange(new MovementHelper(board, card)
+                    .East(1)
+                    .NorthWest(1)
+                    .NorthEast(1)
+                    .GenerateTiles());
+            }
+            else if (new MovementHelper(board, card).NorthWest(1).GenerateTiles().Contains(hoveredTile))
+            {
+                validtiles.AddRange(new MovementHelper(board, card)
+                    .West(1)
+                    .NorthWest(1)
+                    .NorthEast(1)
+                    .GenerateTiles());
+            }
+            else if (new MovementHelper(board, card).West(1).GenerateTiles().Contains(hoveredTile))
+            {
+                validtiles.AddRange(new MovementHelper(board, card)
+                    .West(1)
+                    .NorthWest(1)
+                    .SouthWest(1)
+                    .GenerateTiles());
+            }
+            else if (new MovementHelper(board, card).SouthEast(1).GenerateTiles().Contains(hoveredTile))
+            {
+                validtiles.AddRange(new MovementHelper(board, card)
+                    .East(1)
+                    .SouthWest(1)
+                    .SouthEast(1)
+                    .GenerateTiles());
+            }
+            else if (new MovementHelper(board, card).SouthWest(1).GenerateTiles().Contains(hoveredTile))
+            {
+                validtiles.AddRange(new MovementHelper(board, card)
+                    .West(1)
+                    .SouthEast(1)
+                    .SouthWest(1)
+                    .GenerateTiles());
+            }
+            else
+            {
+                validtiles = new MovementHelper(board, card)
+                    .East(1)
+                    .NorthEast(1)
+                    .NorthWest(1)
+                    .West(1)
+                    .SouthWest(1)
+                    .SouthEast(1)
+                    .GenerateTiles();
+            }
 
             return validtiles;
         }
-
     }
 }

@@ -24,6 +24,6 @@ namespace GameSystem.MoveCommands
             board.Move(playerTile, toTile);
         }
 
-        public abstract List<Tile> Tiles(Board<Piece, Card> board, Card card, Tile hoveredTile);
+        public abstract List<Tile> Tiles(Board<Piece, Card> board, Card card);
     }
 }
