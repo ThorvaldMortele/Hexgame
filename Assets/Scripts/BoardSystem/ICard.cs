@@ -9,5 +9,6 @@ namespace BoardSystem
     public interface ICard
     {
         void CanDrop(Tile droppedTile);
+
     }
 }

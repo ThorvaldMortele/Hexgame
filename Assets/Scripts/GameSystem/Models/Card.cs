@@ -22,6 +22,10 @@ namespace GameSystem.Models
     {
         public event EventHandler<CardDroppedEventArgs> CardDropped;
 
+        public List<Tile> MoveTiles = new List<Tile>();
+
+        public string MoveName = null; 
+
         public Card()
         {
         }

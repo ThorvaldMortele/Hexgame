@@ -134,5 +134,35 @@ namespace BoardSystem
         {
             tile.IsHighlighted = false;
         }
+
+        public bool EastDirection(Tile hoveredTile, Tile playerTile)
+        {
+            return hoveredTile.Position.Z == playerTile.Position.Z && hoveredTile.Position.X > playerTile.Position.X;
+        }
+
+        public bool SouthEastDirection(Tile hoveredTile, Tile playerTile)
+        {
+            return hoveredTile.Position.Y == playerTile.Position.Y && hoveredTile.Position.Z < playerTile.Position.Z;
+        }
+
+        public bool SouthWestDirection(Tile hoveredTile, Tile playerTile)
+        {
+            return hoveredTile.Position.X == playerTile.Position.X && hoveredTile.Position.Z < playerTile.Position.Z;
+        }
+
+        public bool WestDirection(Tile hoveredTile, Tile playerTile)
+        {
+            return hoveredTile.Position.Z == playerTile.Position.Z && hoveredTile.Position.X < playerTile.Position.X;
+        }
+
+        public bool NorthWestDirection(Tile hoveredTile, Tile playerTile)
+        {
+            return hoveredTile.Position.Y == playerTile.Position.Y && hoveredTile.Position.Z > playerTile.Position.Z;
+        }
+
+        public bool NorthEastDirection(Tile hoveredTile, Tile playerTile)
+        {
+            return hoveredTile.Position.X == playerTile.Position.X && hoveredTile.Position.Z > playerTile.Position.Z;
+        }
     }
 }

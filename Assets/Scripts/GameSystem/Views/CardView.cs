@@ -97,6 +97,10 @@ namespace GameSystem.Views
             var board = GameLoop.Instance.Board;
 
             board.UnHighlightAll(tiles);
+
+            GameLoop.Instance.SelectedCard = null;
+
+            GameLoop.Instance.CardDeck.SwapCard(this.gameObject, GameLoop.Instance.MoveManager);
         }
 
         private void SetDraggedPosition(PointerEventData data)

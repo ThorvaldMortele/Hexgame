@@ -1,11 +1,7 @@
 ﻿using BoardSystem;
 using GameSystem.Models;
 using MoveSystem;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace GameSystem.MoveCommands
 {
@@ -13,15 +9,71 @@ namespace GameSystem.MoveCommands
     {
         public void Execute(Board<Piece, Card> board, Card card, Tile toTile)
         {
-            var toPiece = board.PieceAt(toTile);
-            if (toPiece != null)
+            if (card.MoveName.Equals("TeleportMove"))
             {
-                board.Take(toTile);
+                MovePlayer(board, toTile);
             }
+            else if (card.MoveName.Equals("AxialMove") || card.MoveName.Equals("SweepMove"))
+            {
+                TakeEnemies(board, card);
+            }
+            else if (card.MoveName.Equals("PushMove"))
+            {
+                PushEnemies(board, card);
+            }
+        }
 
+        private void MovePlayer(Board<Piece, Card> board, Tile toTile)
+        {
             var playerTile = GameLoop.Instance.FindPlayerTile();
 
             board.Move(playerTile, toTile);
+        }
+
+        private void TakeEnemies(Board<Piece, Card> board, Card card)
+        {
+            foreach (Tile tile in card.MoveTiles)
+            {
+                if (board.PieceAt(tile) != null)
+                {
+                    board.Take(tile);
+                }
+            }
+        }
+
+        private void PushEnemies(Board<Piece, Card> board, Card card)
+        {
+            var playerTile = GameLoop.Instance.FindPlayerTile();
+            foreach (var tile in card.MoveTiles)
+            {
+                var toPiece = board.PieceAt(tile);
+                if (toPiece != null)
+                {
+                    if (!toPiece.IsPlayer)
+                    {
+                        Position moveDirection = new Position
+                            (
+                            tile.Position.X - playerTile.Position.X,
+                            tile.Position.Y - playerTile.Position.Y,
+                            tile.Position.Z - playerTile.Position.Z
+                            );
+                        Position NewTile = new Position
+                            (
+                            tile.Position.X + moveDirection.X,
+                            tile.Position.Y + moveDirection.Y,
+                            tile.Position.Z + moveDirection.Z
+                            );
+
+                        foreach (var tileCheck in board.Tiles)
+                        {
+                            if (tileCheck.Position.X == NewTile.X && tileCheck.Position.Y == NewTile.Y && tileCheck.Position.Z == NewTile.Z)
+                            {
+                                board.Move(tile, tileCheck);
+                            }
+                        }
+                    }
+                }
+            }
         }
 
         public abstract List<Tile> Tiles(Board<Piece, Card> board, Card card);

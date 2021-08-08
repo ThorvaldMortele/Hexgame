@@ -57,8 +57,6 @@ namespace GameSystem.Views
 
             _meshRenderer = GetComponentInChildren<MeshRenderer>();
             _originalMaterial = _meshRenderer.sharedMaterial;
-
-            //GameLoop.Instance.FindCardMovements();
         }
 
         private void ModelHighlightStatusChanged(object sender, EventArgs e)
@@ -106,13 +104,25 @@ namespace GameSystem.Views
             board.UnHighlightAll(oldValidTiles);   //unhighlight them all
 
             var selectedcard = GameLoop.Instance.SelectedCard;  //get the selected card and load the valid tiles
-            GameLoop.Instance.MoveManager.Activate(selectedcard);
 
-            var newValidTiles = GameLoop.Instance.MoveManager.Tiles(); //assign the validtiles in this variable
-
-            if (GameLoop.Instance.SelectedCard != null && newValidTiles.Contains(GameLoop.Instance.HoveredTile)) //if the hoveredtile is part of the validtiles list
+            if (selectedcard != null)
             {
-                board.HighlightAll(newValidTiles);   //highlight the new one
+                GameLoop.Instance.MoveManager.Activate(selectedcard);
+
+                var newValidTiles = GameLoop.Instance.MoveManager.Tiles(); //assign the validtiles in this variable
+
+                if (GameLoop.Instance.SelectedCard != null && newValidTiles.Contains(GameLoop.Instance.HoveredTile)) //if the hoveredtile is part of the validtiles list
+                {
+                    if (!GameLoop.Instance.SelectedCard.MoveName.Equals("TeleportMove"))
+                    {
+                        board.HighlightAll(newValidTiles);   //highlight the new one
+                    }
+                    else
+                    {
+                        board.HighlightOne(GameLoop.Instance.HoveredTile);
+                    }
+                }
+
             }
         }
 

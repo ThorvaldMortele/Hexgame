@@ -1,6 +1,7 @@
 ﻿using BoardSystem;
 using GameSystem.Models;
 using GameSystem.MoveCommands;
+using GameSystem.Utils;
 using GameSystem.Views;
 using MoveSystem;
 using System;
@@ -18,17 +19,18 @@ public class GameLoop : SingletonMonoBehaviour<GameLoop>
 
     public Board<Piece, Card> Board { get; } = new Board<Piece, Card>(3);
 
-    private Card _selectedCard = null;
-    public Card SelectedCard => _selectedCard;
+    public Card SelectedCard = null;
 
     public MoveManager<Piece, Card> MoveManager { get; internal set; }
 
-    public Tile HoveredTile;
+    public GenerateCards CardDeck { get; internal set; }
 
+    public Tile HoveredTile;
 
     private void Awake()
     {
         MoveManager = new MoveManager<Piece, Card>(Board);
+        CardDeck = FindObjectOfType<GenerateCards>();
 
         MoveManager.Register(PlayerMoveSweepCommand.Name, new PlayerMoveSweepCommand());
         MoveManager.Register(PlayerMoveAxialCommand.Name, new PlayerMoveAxialCommand());
@@ -38,6 +40,7 @@ public class GameLoop : SingletonMonoBehaviour<GameLoop>
 
     private void Start()
     {
+        CardDeck.GenerateCardPile(MoveManager);
         ConnectViewsToModel();
     }
 
@@ -56,16 +59,6 @@ public class GameLoop : SingletonMonoBehaviour<GameLoop>
             Board.Place(tile, piece);
 
             pieceView.Model = piece;
-        }
-
-        var cardViews = FindObjectsOfType<CardView>();
-        foreach (var cardView in cardViews)
-        {
-            var card = new Card();
-
-            MoveManager.Register(card, cardView.MovementName);
-
-            cardView.ModelCard = card;
         }
     }
 
@@ -93,7 +86,7 @@ public class GameLoop : SingletonMonoBehaviour<GameLoop>
 
         MoveManager.Deactivate();
 
-        _selectedCard = card;
+        SelectedCard = card;
 
         MoveManager.Activate(card);
 
@@ -107,9 +100,9 @@ public class GameLoop : SingletonMonoBehaviour<GameLoop>
 
     public void SelectActivate(Tile tile) // dropping
     {
-        if (_selectedCard != null)
+        if (SelectedCard != null)
         {
-            MoveManager.Execute(_selectedCard, tile);
+            MoveManager.Execute(SelectedCard, tile);
         }
     }
 }

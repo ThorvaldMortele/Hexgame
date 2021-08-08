@@ -82,6 +82,7 @@ namespace GameSystem.MoveCommands
                     .GenerateTiles();
             }
 
+            card.MoveTiles = validtiles;
             return validtiles;
         }
     }

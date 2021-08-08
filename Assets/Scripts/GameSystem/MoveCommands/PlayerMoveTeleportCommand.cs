@@ -24,20 +24,21 @@ namespace GameSystem.MoveCommands
 
             var bfs = new BreadthFirstAreaSearch<Tile>(NeighbourStrategy, DistanceStrategy);
 
-            //var validtiles = new MovementHelper(board, card)
-            //    .GenerateTiles();
+            var validtiles = new MovementHelper(board, card)
+                .GenerateTiles();
 
-            var tiles = bfs.Area(GameLoop.Instance.FindPlayerTile(), 9f);
+            validtiles = bfs.Area(GameLoop.Instance.FindPlayerTile(), 9f);
 
-            foreach (Tile validtile in tiles.ToList())  //this gets rid of all the tiles in which there's a piece
+            foreach (Tile validtile in validtiles.ToList())  //this gets rid of all the tiles in which there's a piece
             {
                 if (board.PieceAt(validtile) != null)   //we cant get rid of them in the neighbours method since it will not check certain tiles if we do that
                 {
-                    tiles.Remove(validtile);
+                    validtiles.Remove(validtile);
                 }
             }
 
-            return tiles;
+            card.MoveTiles = validtiles;
+            return validtiles;
         }
 
         private List<Tile> Neighbours(Tile tile, Board<Piece, Card> board)
