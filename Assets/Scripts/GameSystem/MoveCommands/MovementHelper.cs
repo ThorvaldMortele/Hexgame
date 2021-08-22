@@ -107,16 +107,16 @@ namespace GameSystem.Models.MoveCommands
             return new List<Tile>(_tiles);
         }
 
-        public static bool CanCapture(Board<Piece, Card> board, Piece Piece, Tile toTile)
-        {
-            var other = board.PieceAt(toTile);
-            return other != null && other != Piece;
-        }
+        //public static bool CanCapture(Board<Piece, Card> board, Piece Piece, Tile toTile)
+        //{
+        //    var other = board.PieceAt(toTile);
+        //    return other != null && other != Piece;
+        //}
 
-        public static bool IsEmpty(Board<Piece, Card> board, Piece Piece, Tile toTile)
-        {
-            var other = board.PieceAt(toTile);
-            return other == null;
-        }
+        //public static bool IsEmpty(Board<Piece, Card> board, Piece Piece, Tile toTile)
+        //{
+        //    var other = board.PieceAt(toTile);
+        //    return other == null;
+        //}
     }
 }
