@@ -21,7 +21,6 @@ namespace GameSystem.States
 
         public virtual void OnEnterTile(Tile hoveredTile) { }
         public virtual void OnDropTile() { }
-        public virtual void OnTileExit() { }
         public virtual void OnCardBeginDrag(Card modelCard) { }
         public virtual void OnEndCardDrag(List<TileView> tiles, GameObject cardObj) { }
             

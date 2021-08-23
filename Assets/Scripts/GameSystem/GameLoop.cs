@@ -34,13 +34,13 @@ public class GameLoop : SingletonMonoBehaviour<GameLoop>
     {
         ConnectViewsToModel();
         MoveManager = new MoveManager<Piece, Card>(Board);
-        var CardDeck = FindObjectOfType<CardViewFactory>();
         StateMachine = new StateMachine<GameStateBase>();
-
         Players = FindObjectsOfType<PieceView>().ToList();
 
+        var CardDeck = FindObjectOfType<CardViewFactory>();
+        
         StateMachine.RegisterState(GameStates.Play, new PlayGameState(Board, MoveManager, CardDeck));
-        StateMachine.RegisterState(GameStates.FindActive, new FindActivePlayerState(Board));
+        StateMachine.RegisterState(GameStates.FindActive, new FindActivePlayerState());
         StateMachine.MoveTo(GameStates.FindActive);
 
         MoveManager.Register(PlayerMoveSweepCommand.Name, new PlayerMoveSweepCommand());
@@ -56,12 +56,12 @@ public class GameLoop : SingletonMonoBehaviour<GameLoop>
         StartCoroutine(PostStart());
     }
 
-    public void StartTest()
+    public void StartTurnSwitch()
     {
-        StartCoroutine(test());
+        StartCoroutine(DelayTurnSwitch());
     }
 
-    private IEnumerator test()
+    private IEnumerator DelayTurnSwitch()
     {
         yield return new WaitForSeconds(0.1f);
 
@@ -99,11 +99,11 @@ public class GameLoop : SingletonMonoBehaviour<GameLoop>
         }
     }
 
-    public Tile FindPlayerTile()    //REVISIT THIS
+    public Tile FindPlayerTile()    
     {
         foreach (var pieceView in Players)
         {
-            if (pieceView.IsActive && pieceView != null) // if we find a player, find the tile it's on and if its active
+            if (pieceView.IsActive && pieceView != null) //find the tile it's on and if its active
             {
                 var worldPosition = pieceView.transform.position;
                 var boardPosition = _positionHelper.ToBoardPosition(worldPosition);
@@ -138,11 +138,6 @@ public class GameLoop : SingletonMonoBehaviour<GameLoop>
     public void OnTileDrop()
     {
         StateMachine.CurrentState.OnDropTile();
-    }
-
-    public void OnTileExit()
-    {
-        StateMachine.CurrentState.OnTileExit();
     }
 
     public void OnEndCardDrag(List<TileView> tiles, GameObject cardObj)

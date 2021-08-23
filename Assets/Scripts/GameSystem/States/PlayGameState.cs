@@ -67,6 +67,8 @@ namespace GameSystem.States
 
             if (_selectedCard != null)
             {
+                Select(_selectedCard);
+
                 var fromTile = GameLoop.Instance.FindPlayerTile();
 
                 _moveManager.Activate(_selectedCard, hoveredTile, fromTile);
@@ -86,17 +88,10 @@ namespace GameSystem.States
             SelectActivate(_hoveredTile);
         }
 
-        public override void OnTileExit()
-        {
-            if (_hoveredTile != null)
-            {
-                _board.UnHighlightOne(_hoveredTile);     //unhighlight the previous tile
-            }
-        }
 
         public override void OnCardBeginDrag(Card modelCard)
         {
-            Select(modelCard);
+            _selectedCard = modelCard;
         }
 
         public override void OnEndCardDrag(List<TileView> tileViews, GameObject cardObj)
@@ -120,7 +115,7 @@ namespace GameSystem.States
 
             if (_usedCardsPerTurn > 1)
             {
-                GameLoop.Instance.StartTest();
+                GameLoop.Instance.StartTurnSwitch();
             }
         }
         private List<Tile> GetTiles(List<TileView> tileViews)

@@ -62,9 +62,12 @@ namespace GameSystem.Views
 
         private void ModelHighlightStatusChanged(object sender, EventArgs e)
         {
-            if (Model.IsHighlighted) _meshRenderer.material = _highlightMaterial;
+            if (_meshRenderer != null && _originalMaterial != null)
+            {
+                if (Model.IsHighlighted) _meshRenderer.material = _highlightMaterial;
 
-            else _meshRenderer.material = _originalMaterial;
+                else _meshRenderer.material = _originalMaterial;
+            }
         }
 
         private void OnDestroy()

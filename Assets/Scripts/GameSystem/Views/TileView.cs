@@ -11,7 +11,7 @@ using UnityEngine.EventSystems;
 namespace GameSystem.Views
 {
     [SelectionBase]
-    public class TileView : MonoBehaviour, IDropHandler, IPointerEnterHandler, IPointerExitHandler
+    public class TileView : MonoBehaviour, IDropHandler, IPointerEnterHandler
     {
         [SerializeField]
         private Material _highlightMaterial = null;
@@ -102,11 +102,6 @@ namespace GameSystem.Views
         public void OnDrop(PointerEventData eventData)
         {
             GameLoop.Instance.OnTileDrop();
-        }
-
-        public void OnPointerExit(PointerEventData eventData)
-        {
-            GameLoop.Instance.OnTileExit();
         }
     }
 }
