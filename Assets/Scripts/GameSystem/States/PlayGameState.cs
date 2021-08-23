@@ -75,14 +75,7 @@ namespace GameSystem.States
 
                 if (_selectedCard != null && newValidTiles.Contains(_hoveredTile)) //if the hoveredtile is part of the validtiles list
                 {
-                    //if (!_selectedCard.MoveName.Equals(MoveNames.Teleport))
-                    //{
-                        _board.HighlightAll(newValidTiles);   //highlight the new one
-                    //}
-                    //else
-                    //{
-                    //    _board.HighlightOne(_hoveredTile);
-                    //}
+                     _board.HighlightAll(newValidTiles);   //highlight the new one
                 }
 
             }
@@ -127,7 +120,7 @@ namespace GameSystem.States
 
             if (_usedCardsPerTurn > 1)
             {
-                StateMachine.MoveTo(GameStates.FindActive);
+                GameLoop.Instance.StartTest();
             }
         }
         private List<Tile> GetTiles(List<TileView> tileViews)

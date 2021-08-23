@@ -40,7 +40,7 @@ public class GameLoop : SingletonMonoBehaviour<GameLoop>
         Players = FindObjectsOfType<PieceView>().ToList();
 
         StateMachine.RegisterState(GameStates.Play, new PlayGameState(Board, MoveManager, CardDeck));
-        StateMachine.RegisterState(GameStates.FindActive, new FindActivePlayerState(Board, Players));
+        StateMachine.RegisterState(GameStates.FindActive, new FindActivePlayerState(Board));
         StateMachine.MoveTo(GameStates.FindActive);
 
         MoveManager.Register(PlayerMoveSweepCommand.Name, new PlayerMoveSweepCommand());
@@ -54,6 +54,18 @@ public class GameLoop : SingletonMonoBehaviour<GameLoop>
         StateMachine.CurrentState.LoadCards();
 
         StartCoroutine(PostStart());
+    }
+
+    public void StartTest()
+    {
+        StartCoroutine(test());
+    }
+
+    private IEnumerator test()
+    {
+        yield return new WaitForSeconds(0.1f);
+
+        StateMachine.MoveTo(GameStates.FindActive);
     }
 
     private IEnumerator PostStart()
@@ -91,7 +103,7 @@ public class GameLoop : SingletonMonoBehaviour<GameLoop>
     {
         foreach (var pieceView in Players)
         {
-            if (pieceView.IsPlayer == true && pieceView.IsActive) // if we find a player, find the tile it's on and if its active
+            if (pieceView.IsPlayer == true && pieceView.IsActive && pieceView != null) // if we find a player, find the tile it's on and if its active
             {
                 var worldPosition = pieceView.transform.position;
                 var boardPosition = _positionHelper.ToBoardPosition(worldPosition);

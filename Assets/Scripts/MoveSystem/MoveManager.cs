@@ -51,7 +51,6 @@ namespace MoveSystem
         {
             _activeCommand = Provider(card);
             _validTiles = _activeCommand.Tiles(_board, card, hoveredTile, fromTile);
-            Debug.Log(_validTiles.Count());
         }
 
         public void Execute(TCard card, Tile tile)

@@ -13,29 +13,36 @@ namespace GameSystem.States
     public class FindActivePlayerState : GameStateBase
     {
         private Board<Piece, Card> _board;
-        private List<PieceView> _players = new List<PieceView>();
         private int _idx = 0;
 
-        public FindActivePlayerState(Board<Piece, Card> board, List<PieceView> players)
+        public FindActivePlayerState(Board<Piece, Card> board)
         {
             _board = board;
-            _players = players;
         }
 
         public override void OnEnter()
         {
-            var Players = GameLoop.Instance.UpdatePlayersList();
+            GameLoop.Instance.UpdatePlayersList();
+            var Players = GameLoop.Instance.Players;
 
-            //if (_idx > Players.Count)
+            Debug.Log(Players.Count + " playercount");
+            Debug.Log(_idx + " index");
+
+            //if (_idx > Players.Count-1)
             //{
             //    _idx = 0;
             //}
 
-            _players[_idx].IsActive = false;
+            Players[_idx].IsActive = false;
 
             _idx++;
 
-            _players[_idx].IsActive = true;
+            if (_idx > Players.Count - 1)
+            {
+                _idx = 0;
+            }
+
+            Players[_idx].IsActive = true;
 
             //als iemand dood gaat verwijder hem uit de lijst
 
