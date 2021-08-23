@@ -32,11 +32,11 @@ public class GameLoop : SingletonMonoBehaviour<GameLoop>
 
     private void Awake()
     {
+        ConnectViewsToModel();
         MoveManager = new MoveManager<Piece, Card>(Board);
         var CardDeck = FindObjectOfType<CardViewFactory>();
         StateMachine = new StateMachine<GameStateBase>();
 
-        ConnectViewsToModel();
         Players = FindObjectsOfType<PieceView>().ToList();
 
         StateMachine.RegisterState(GameStates.Play, new PlayGameState(Board, MoveManager, CardDeck));
@@ -91,7 +91,7 @@ public class GameLoop : SingletonMonoBehaviour<GameLoop>
 
             var tile = Board.TileAt(boardPosition);
 
-            var piece = new Piece(pieceView.IsPlayer);
+            var piece = new Piece(pieceView);
 
             Board.Place(tile, piece);
 
@@ -103,7 +103,7 @@ public class GameLoop : SingletonMonoBehaviour<GameLoop>
     {
         foreach (var pieceView in Players)
         {
-            if (pieceView.IsPlayer == true && pieceView.IsActive && pieceView != null) // if we find a player, find the tile it's on and if its active
+            if (pieceView.IsActive && pieceView != null) // if we find a player, find the tile it's on and if its active
             {
                 var worldPosition = pieceView.transform.position;
                 var boardPosition = _positionHelper.ToBoardPosition(worldPosition);

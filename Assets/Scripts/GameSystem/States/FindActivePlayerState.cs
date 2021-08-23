@@ -25,9 +25,6 @@ namespace GameSystem.States
             GameLoop.Instance.UpdatePlayersList();
             var Players = GameLoop.Instance.Players;
 
-            Debug.Log(Players.Count + " playercount");
-            Debug.Log(_idx + " index");
-
             //if (_idx > Players.Count-1)
             //{
             //    _idx = 0;
@@ -37,12 +34,18 @@ namespace GameSystem.States
 
             _idx++;
 
-            if (_idx > Players.Count - 1)
+            if (_idx > Players.Count)
             {
                 _idx = 0;
             }
 
             Players[_idx].IsActive = true;
+
+            foreach (var player in Players)
+            {
+                if (player.IsActive) player.Model.IsHighlighted = true;
+                else player.Model.IsHighlighted = false;
+            }
 
             //als iemand dood gaat verwijder hem uit de lijst
 

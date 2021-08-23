@@ -29,6 +29,25 @@ namespace GameSystem.Models
         public bool IsPlayer { get; }
         public bool IsActive { get; }
 
+        public event EventHandler HighlightStatusChanged;
+        private bool _isHighlighted = false;
+
+        public bool IsHighlighted
+        {
+            get => _isHighlighted;
+            set
+            {
+                _isHighlighted = value;
+                OnHighlightStatusChanged(EventArgs.Empty);
+            }
+        }
+
+        protected virtual void OnHighlightStatusChanged(EventArgs args)
+        {
+            EventHandler handler = HighlightStatusChanged;
+            handler?.Invoke(this, args);    //? means if its not null then invoke
+        }
+
         public Piece(bool isPlayer)
         {
             IsPlayer = isPlayer;

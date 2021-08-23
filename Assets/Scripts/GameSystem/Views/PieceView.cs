@@ -7,11 +7,27 @@ namespace GameSystem.Views
 {
     public class PieceView : MonoBehaviour
     {
+        [SerializeField]
+        private Material _highlightMaterial = null;
+
+        [SerializeField]
+        private PositionHelper _positionHelper = null;
+
+        private Material _originalMaterial;
+
+        private MeshRenderer _meshRenderer;
+
+        private Piece _model;
+
+        public bool IsActive;
+
+
         public Piece Model { get => _model;
             internal set
             {
                 if (_model != null)
                 {
+                    _model.HighlightStatusChanged -= ModelHighlightStatusChanged;
                     _model.PieceMoved -= ModelMoved;
                     _model.EnemyTaken -= Modeltaken;
                 }
@@ -20,10 +36,17 @@ namespace GameSystem.Views
 
                 if (_model != null)
                 {
+                    _model.HighlightStatusChanged += ModelHighlightStatusChanged;
                     _model.PieceMoved += ModelMoved;
                     _model.EnemyTaken += Modeltaken;
                 }  
             }
+        }
+
+        private void Awake()
+        {
+            _meshRenderer = GetComponent<MeshRenderer>();
+            _originalMaterial = _meshRenderer.sharedMaterial;
         }
 
         private void Modeltaken(object sender, EventArgs e)
@@ -37,17 +60,12 @@ namespace GameSystem.Views
             transform.position = new Vector3(worldPos.x, 1.25f, worldPos.z);
         }
 
-        private Piece _model;
+        private void ModelHighlightStatusChanged(object sender, EventArgs e)
+        {
+            if (Model.IsHighlighted) _meshRenderer.material = _highlightMaterial;
 
-        public bool IsActive;
-
-        [SerializeField]
-        private bool _isPlayer;
-
-        public bool IsPlayer => _isPlayer;
-
-        [SerializeField]
-        private PositionHelper _positionHelper = null;
+            else _meshRenderer.material = _originalMaterial;
+        }
 
         private void OnDestroy()
         {

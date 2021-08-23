@@ -77,6 +77,11 @@ PrefabInstance:
       propertyPath: _movementName
       value: SweepMove
       objectReference: {fileID: 0}
+    - target: {fileID: 4516517510226322439, guid: 0b644e8a12ee1b94bbd085d14defb289,
+        type: 3}
+      propertyPath: _highlightMaterial
+      value: 
+      objectReference: {fileID: 2100000, guid: cbe9016d2838f58409367ac8556fa703, type: 2}
     - target: {fileID: 8754315312825793083, guid: 0b644e8a12ee1b94bbd085d14defb289,
         type: 3}
       propertyPath: m_Materials.Array.data[0]
