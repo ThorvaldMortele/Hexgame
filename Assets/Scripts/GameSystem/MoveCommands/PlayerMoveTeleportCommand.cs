@@ -14,7 +14,7 @@ namespace GameSystem.MoveCommands
     [MoveCommand(Name)]
     public class PlayerMoveTeleportCommand : AbstractMoveCommand
     {
-        public const string Name = "TeleportMove";
+        public const string Name = MoveNames.Teleport;
 
         public override List<Tile> Tiles(Board<Piece, Card> board, Card card)
         {
@@ -29,14 +29,6 @@ namespace GameSystem.MoveCommands
 
             validtiles = bfs.Area(GameLoop.Instance.FindPlayerTile(), 9f);
 
-            foreach (Tile validtile in validtiles.ToList())  //this gets rid of all the tiles in which there's a piece
-            {
-                if (board.PieceAt(validtile) != null)   //we cant get rid of them in the neighbours method since it will not check certain tiles if we do that
-                {
-                    validtiles.Remove(validtile);
-                }
-            }
-
             card.MoveTiles = validtiles;
             return validtiles;
         }
@@ -44,67 +36,51 @@ namespace GameSystem.MoveCommands
         private List<Tile> Neighbours(Tile tile, Board<Piece, Card> board)
         {
             var neighbours = new List<Tile>();
+
             var position = tile.Position;
 
-            var upRightPosition = position;
-            upRightPosition.Z += 1;
-            upRightPosition.X = 0;
-            upRightPosition.Y = -upRightPosition.X - upRightPosition.Z;
-            var upRightTile = board.TileAt(upRightPosition);
-            if (upRightTile != null)
-            {
-                neighbours.Add(upRightTile);
-            }
+            var northEast = position;
+            northEast.Y -= 1;
+            northEast.Z += 1;
+            var northEastTile = board.TileAt(northEast);
+            if (northEastTile != null && board.PieceAt(northEastTile) == null)
+                neighbours.Add(northEastTile);
 
-            var downRightPosition = position;
-            downRightPosition.Z -= 1;
-            downRightPosition.X += 1;
-            downRightPosition.Y = -downRightPosition.X - downRightPosition.Z;
-            var downRightTile = board.TileAt(downRightPosition);
-            if (downRightTile != null)
-            {
-                neighbours.Add(downRightTile);
-            }
+            var northWest = position;
+            northWest.X -= 1;
+            northWest.Z += 1;
+            var northWestTile = board.TileAt(northWest);
+            if (northWestTile != null && board.PieceAt(northWestTile) == null)
+                neighbours.Add(northWestTile);
 
-            var rightPosition = position;
-            rightPosition.X += 1;
-            rightPosition.Z = 0;
-            rightPosition.Y = -rightPosition.X - rightPosition.Z;
-            var rightTile = board.TileAt(rightPosition);
-            if (rightTile != null)
-            {
-                neighbours.Add(rightTile);
-            }
+            var east = position;
+            east.X += 1;
+            east.Y -= 1;
+            var eastTile = board.TileAt(east);
+            if (eastTile != null && board.PieceAt(eastTile) == null)
+                neighbours.Add(eastTile);
 
-            var upLeftPosition = position;
-            upLeftPosition.Z += 1;
-            upLeftPosition.X -= 1;
-            upLeftPosition.Y = -upLeftPosition.X - upLeftPosition.Z;
-            var upLeftTile = board.TileAt(upLeftPosition);
-            if (upLeftTile != null)
-            {
-                neighbours.Add(upLeftTile);
-            }
+            var west = position;
+            west.X -= 1;
+            west.Y += 1;
+            var westTile = board.TileAt(west);
+            if (westTile != null && board.PieceAt(westTile) == null)
+                neighbours.Add(westTile);
 
-            var leftPosition = position;
-            leftPosition.X -= 1;
-            leftPosition.Z = 0;
-            leftPosition.Y = -leftPosition.X - leftPosition.Z;
-            var leftTile = board.TileAt(leftPosition);
-            if (leftTile != null)
-            {
-                neighbours.Add(leftTile);
-            }
+            var southEast = position;
+            southEast.X += 1;
+            southEast.Z -= 1;
+            var southEastTile = board.TileAt(southEast);
+            if (southEastTile != null && board.PieceAt(southEastTile) == null)
+                neighbours.Add(southEastTile);
 
-            var downLeftPosition = position;
-            downLeftPosition.Z -= 1;
-            downLeftPosition.X = 0;
-            downLeftPosition.Y = -downLeftPosition.X - downLeftPosition.Z;
-            var downLeftTile = board.TileAt(downLeftPosition);
-            if (downLeftTile != null)
-            {
-                neighbours.Add(downLeftTile);
-            }
+            var southWest = position;
+            southWest.Y += 1;
+            southWest.Z -= 1;
+            var southWestTile = board.TileAt(southWest);
+            if (southWestTile != null && board.PieceAt(southWestTile) == null)
+                neighbours.Add(southWestTile);
+
 
             return neighbours;
         }

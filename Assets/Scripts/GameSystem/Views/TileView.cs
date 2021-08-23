@@ -1,4 +1,5 @@
 ﻿using BoardSystem;
+using GameSystem.Utils;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -113,13 +114,13 @@ namespace GameSystem.Views
 
                 if (GameLoop.Instance.SelectedCard != null && newValidTiles.Contains(GameLoop.Instance.HoveredTile)) //if the hoveredtile is part of the validtiles list
                 {
-                    if (!GameLoop.Instance.SelectedCard.MoveName.Equals("TeleportMove"))
+                    if (!GameLoop.Instance.SelectedCard.MoveName.Equals(MoveNames.Teleport))
                     {
                         board.HighlightAll(newValidTiles);   //highlight the new one
                     }
                     else
                     {
-                        board.HighlightOne(GameLoop.Instance.HoveredTile);
+                        board.HighlightOne(this.Model);
                     }
                 }
 
@@ -128,14 +129,14 @@ namespace GameSystem.Views
 
         public void OnDrop(PointerEventData eventData)
         {
-            GameLoop.Instance.SelectActivate(GameLoop.Instance.HoveredTile);
+            GameLoop.Instance.SelectActivate(this.Model);
         }
 
         public void OnPointerExit(PointerEventData eventData)
         {
             var board = GameLoop.Instance.Board;
 
-            board.UnHighlightOne(GameLoop.Instance.HoveredTile);     //unhighlight the previous tile
+            board.UnHighlightOne(this.Model);     //unhighlight the previous tile
         }
     }
 }

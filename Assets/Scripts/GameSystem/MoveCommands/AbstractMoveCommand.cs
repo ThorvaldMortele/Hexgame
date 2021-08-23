@@ -1,5 +1,6 @@
 ﻿using BoardSystem;
 using GameSystem.Models;
+using GameSystem.Utils;
 using MoveSystem;
 using System.Collections.Generic;
 
@@ -9,15 +10,15 @@ namespace GameSystem.MoveCommands
     {
         public void Execute(Board<Piece, Card> board, Card card, Tile toTile)
         {
-            if (card.MoveName.Equals("TeleportMove"))
+            if (card.MoveName.Equals(MoveNames.Teleport))
             {
                 MovePlayer(board, toTile);
             }
-            else if (card.MoveName.Equals("AxialMove") || card.MoveName.Equals("SweepMove"))
+            else if (card.MoveName.Equals(MoveNames.Axial) || card.MoveName.Equals(MoveNames.Sweep))
             {
                 TakeEnemies(board, card);
             }
-            else if (card.MoveName.Equals("PushMove"))
+            else if (card.MoveName.Equals(MoveNames.Push))
             {
                 PushEnemies(board, card);
             }

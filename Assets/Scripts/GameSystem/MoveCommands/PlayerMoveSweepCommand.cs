@@ -14,7 +14,7 @@ namespace GameSystem.MoveCommands
     [MoveCommand(Name)]
     public class PlayerMoveSweepCommand : AbstractMoveCommand
     {
-        public const string Name = "SweepMove";
+        public const string Name = MoveNames.Sweep;
         public override List<Tile> Tiles(Board<Piece, Card> board, Card card)
         {
             var hoveredTile = GameLoop.Instance.HoveredTile;

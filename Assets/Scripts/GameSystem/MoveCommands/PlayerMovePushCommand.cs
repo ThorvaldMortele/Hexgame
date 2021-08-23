@@ -14,7 +14,7 @@ namespace GameSystem.MoveCommands
     [MoveCommand(Name)]
     public class PlayerMovePushCommand : AbstractMoveCommand
     {
-        public const string Name = "PushMove";
+        public const string Name = MoveNames.Push;
         public override List<Tile> Tiles(Board<Piece, Card> board, Card card)
         {
 
