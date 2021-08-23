@@ -63,7 +63,6 @@ namespace GameSystem.Utils
 
         public void SwapCard(GameObject cardObj, MoveManager<Piece, Card> MoveManager)
         {
-            Debug.Log(_cards.Count);
             if (_cards.Count != 0)
             {
                 var cardobj = Instantiate(_cards[0], Parent.position, Quaternion.identity, Parent);

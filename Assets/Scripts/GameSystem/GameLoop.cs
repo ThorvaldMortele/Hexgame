@@ -1,9 +1,11 @@
 ﻿using BoardSystem;
 using GameSystem.Models;
 using GameSystem.MoveCommands;
+using GameSystem.States;
 using GameSystem.Utils;
 using GameSystem.Views;
 using MoveSystem;
+using StateSystem;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -27,10 +29,17 @@ public class GameLoop : SingletonMonoBehaviour<GameLoop>
 
     public Tile HoveredTile;
 
+    public StateMachine<GameStateBase> StateMachine;
+
     private void Awake()
     {
         MoveManager = new MoveManager<Piece, Card>(Board);
         CardDeck = FindObjectOfType<GenerateCards>();
+        StateMachine = new StateMachine<GameStateBase>();
+
+        StateMachine.RegisterState(GameStates.Play, new PlayGameState());
+        StateMachine.RegisterState(GameStates.FindActive, new FindActivePlayerState());
+        StateMachine.MoveTo(GameStates.FindActive);
 
         MoveManager.Register(PlayerMoveSweepCommand.Name, new PlayerMoveSweepCommand());
         MoveManager.Register(PlayerMoveAxialCommand.Name, new PlayerMoveAxialCommand());
