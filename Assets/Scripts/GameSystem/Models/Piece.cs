@@ -27,6 +27,7 @@ namespace GameSystem.Models
         public event EventHandler EnemyTaken;
 
         public bool IsPlayer { get; }
+        public bool IsActive { get; }
 
         public Piece(bool isPlayer)
         {

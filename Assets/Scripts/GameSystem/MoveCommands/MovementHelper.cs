@@ -10,18 +10,15 @@ namespace GameSystem.Models.MoveCommands
 {
     public class MovementHelper
     {
-        public delegate bool Validator(Board<Piece, Card> board, Card card, Tile toTile);
+        public delegate bool Validator(Board<Piece, Card> board, Tile toTile);
 
         private Board<Piece, Card> _board;
-
-        private Card _card;
         private List<Tile> _tiles = new List<Tile>();
 
 
-        public MovementHelper(Board<Piece, Card> board, Card Card)
+        public MovementHelper(Board<Piece, Card> board)
         {
             _board = board;
-            _card = Card;
         }
 
         public MovementHelper NorthWest(int steps = int.MaxValue, params Validator[] validators)
@@ -92,7 +89,7 @@ namespace GameSystem.Models.MoveCommands
                 }
                 var nextPiece = _board.PieceAt(nextTile);
 
-                if ((validators.All(v => v(_board, _card, nextTile))))
+                if ((validators.All(v => v(_board, nextTile))))
                     _tiles.Add(nextTile);
 
                 nextPosition = MoveNext(nextPosition);
@@ -107,16 +104,5 @@ namespace GameSystem.Models.MoveCommands
             return new List<Tile>(_tiles);
         }
 
-        //public static bool CanCapture(Board<Piece, Card> board, Piece Piece, Tile toTile)
-        //{
-        //    var other = board.PieceAt(toTile);
-        //    return other != null && other != Piece;
-        //}
-
-        //public static bool IsEmpty(Board<Piece, Card> board, Piece Piece, Tile toTile)
-        //{
-        //    var other = board.PieceAt(toTile);
-        //    return other == null;
-        //}
     }
 }

@@ -96,47 +96,17 @@ namespace GameSystem.Views
 
         public void OnPointerEnter(PointerEventData eventData)
         {
-            GameLoop.Instance.HoveredTile = this.Model; //assign the hoveredtile
-
-            var board = GameLoop.Instance.Board;    //get the board
-
-            var oldValidTiles = GameLoop.Instance.MoveManager.Tiles(); //assign the validtiles in this variable
-
-            board.UnHighlightAll(oldValidTiles);   //unhighlight them all
-
-            var selectedcard = GameLoop.Instance.SelectedCard;  //get the selected card and load the valid tiles
-
-            if (selectedcard != null)
-            {
-                GameLoop.Instance.MoveManager.Activate(selectedcard);
-
-                var newValidTiles = GameLoop.Instance.MoveManager.Tiles(); //assign the validtiles in this variable
-
-                if (GameLoop.Instance.SelectedCard != null && newValidTiles.Contains(GameLoop.Instance.HoveredTile)) //if the hoveredtile is part of the validtiles list
-                {
-                    if (!GameLoop.Instance.SelectedCard.MoveName.Equals(MoveNames.Teleport))
-                    {
-                        board.HighlightAll(newValidTiles);   //highlight the new one
-                    }
-                    else
-                    {
-                        board.HighlightOne(this.Model);
-                    }
-                }
-
-            }
+            GameLoop.Instance.OnTileEnter(this.Model);
         }
 
         public void OnDrop(PointerEventData eventData)
         {
-            GameLoop.Instance.SelectActivate(this.Model);
+            GameLoop.Instance.OnTileDrop();
         }
 
         public void OnPointerExit(PointerEventData eventData)
         {
-            var board = GameLoop.Instance.Board;
-
-            board.UnHighlightOne(this.Model);     //unhighlight the previous tile
+            GameLoop.Instance.OnTileExit();
         }
     }
 }

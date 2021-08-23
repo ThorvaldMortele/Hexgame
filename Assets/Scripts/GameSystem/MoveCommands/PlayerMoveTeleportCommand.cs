@@ -16,7 +16,7 @@ namespace GameSystem.MoveCommands
     {
         public const string Name = MoveNames.Teleport;
 
-        public override List<Tile> Tiles(Board<Piece, Card> board, Card card)
+        public override List<Tile> Tiles(Board<Piece, Card> board, Card card, Tile hoveredTile)
         {
             List<Tile> NeighbourStrategy(Tile centerTile) => Neighbours(centerTile, board);
 
@@ -24,7 +24,7 @@ namespace GameSystem.MoveCommands
 
             var bfs = new BreadthFirstAreaSearch<Tile>(NeighbourStrategy, DistanceStrategy);
 
-            var validtiles = new MovementHelper(board, card)
+            var validtiles = new MovementHelper(board)
                 .GenerateTiles();
 
             validtiles = bfs.Area(GameLoop.Instance.FindPlayerTile(), 9f);

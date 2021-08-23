@@ -10,18 +10,19 @@ namespace GameSystem.MoveCommands
     {
         public void Execute(Board<Piece, Card> board, Card card, Tile toTile)
         {
-            if (card.MoveName.Equals(MoveNames.Teleport))
-            {
-                MovePlayer(board, toTile);
-            }
-            else if (card.MoveName.Equals(MoveNames.Axial) || card.MoveName.Equals(MoveNames.Sweep))
-            {
-                TakeEnemies(board, card);
-            }
-            else if (card.MoveName.Equals(MoveNames.Push))
-            {
-                PushEnemies(board, card);
-            }
+
+            //if (card.MoveName.Equals(MoveNames.Teleport))
+            //{
+            //    MovePlayer(board, toTile);
+            //}
+            //else if (card.MoveName.Equals(MoveNames.Axial) || card.MoveName.Equals(MoveNames.Sweep))
+            //{
+            //    TakeEnemies(board, card);
+            //}
+            //else if (card.MoveName.Equals(MoveNames.Push))
+            //{
+            //    PushEnemies(board, card);
+            //}
         }
 
         private void MovePlayer(Board<Piece, Card> board, Tile toTile)
@@ -77,6 +78,6 @@ namespace GameSystem.MoveCommands
             }
         }
 
-        public abstract List<Tile> Tiles(Board<Piece, Card> board, Card card);
+        public abstract List<Tile> Tiles(Board<Piece, Card> board, Card card, Tile hoveredTile);
     }
 }

@@ -70,7 +70,7 @@ namespace GameSystem.Views
 
             SetDraggedPosition(eventData);
 
-            GameLoop.Instance.ShowAllAvailableTiles(ModelCard);
+            GameLoop.Instance.OnCardBeginDrag(ModelCard);
         }
 
         
@@ -87,20 +87,8 @@ namespace GameSystem.Views
                 Destroy(m_DraggingIcon);
 
             var tileViews = FindObjectsOfType<TileView>();
-            var tiles = new List<Tile>();
 
-            foreach (var tileV in tileViews)
-            {
-                tiles.Add(tileV.Model);
-            }
-
-            var board = GameLoop.Instance.Board;
-
-            board.UnHighlightAll(tiles);
-
-            GameLoop.Instance.SelectedCard = null;
-
-            GameLoop.Instance.CardDeck.SwapCard(this.gameObject, GameLoop.Instance.MoveManager);
+            GameLoop.Instance.OnEndCardDrag(tileViews.ToList(), this.gameObject);
         }
 
         private void SetDraggedPosition(PointerEventData data)

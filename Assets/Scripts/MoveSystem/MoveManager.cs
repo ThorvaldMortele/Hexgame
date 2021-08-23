@@ -47,10 +47,10 @@ namespace MoveSystem
             return null;
         }
 
-        public void Activate(TCard card)
+        public void Activate(TCard card, Tile hoveredTile)
         {
             _activeCommand = Provider(card);
-            _validTiles = _activeCommand.Tiles(_board, card);
+            _validTiles = _activeCommand.Tiles(_board, card, hoveredTile);
         }
 
         public void Execute(TCard card, Tile tile)

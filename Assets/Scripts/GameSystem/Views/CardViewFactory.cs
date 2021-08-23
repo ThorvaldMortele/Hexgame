@@ -10,7 +10,7 @@ using UnityEngine;
 
 namespace GameSystem.Utils
 {
-    public class GenerateCards : MonoBehaviour
+    public class CardViewFactory : MonoBehaviour
     {
         private List<GameObject> _cards = new List<GameObject>();
         private int _cardCount = 15;
