@@ -32,16 +32,17 @@ public class GameLoop : SingletonMonoBehaviour<GameLoop>
 
     private void Awake()
     {
-        ConnectViewsToModel();
+        
         MoveManager = new MoveManager<Piece, Card>(Board);
         StateMachine = new StateMachine<GameStateBase>();
         Players = FindObjectsOfType<PieceView>().ToList();
 
         var CardDeck = FindObjectOfType<CardViewFactory>();
-        
+
+        ConnectViewsToModel();
         StateMachine.RegisterState(GameStates.Play, new PlayGameState(Board, MoveManager, CardDeck));
         StateMachine.RegisterState(GameStates.FindActive, new FindActivePlayerState());
-        StateMachine.MoveTo(GameStates.FindActive);
+        
 
         MoveManager.Register(PlayerMoveSweepCommand.Name, new PlayerMoveSweepCommand());
         MoveManager.Register(PlayerMoveAxialCommand.Name, new PlayerMoveAxialCommand());
@@ -51,6 +52,8 @@ public class GameLoop : SingletonMonoBehaviour<GameLoop>
 
     private void Start()
     {
+        StateMachine.MoveTo(GameStates.FindActive);
+
         StateMachine.CurrentState.LoadCards();
 
         StartCoroutine(PostStart());
