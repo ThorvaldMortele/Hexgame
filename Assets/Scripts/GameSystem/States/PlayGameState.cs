@@ -17,8 +17,6 @@ namespace GameSystem.States
         private MoveManager<Piece, Card> _moveManager;
         private Board<Piece, Card> _board;
         private Tile _hoveredTile = null;
-        //private EnemyMovePathfinding _path;
-
         private Card _selectedCard = null;
         private CardViewFactory _cardDeck;
 
@@ -52,7 +50,9 @@ namespace GameSystem.States
 
             _selectedCard = card;
 
-            _moveManager.Activate(card, _hoveredTile);
+            var fromTile = GameLoop.Instance.FindPlayerTile();
+
+            _moveManager.Activate(card, _hoveredTile, fromTile);
 
             _board.HighlightAll(_moveManager.Tiles());
         }
@@ -67,20 +67,22 @@ namespace GameSystem.States
 
             if (_selectedCard != null)
             {
-                _moveManager.Activate(_selectedCard, hoveredTile);
+                var fromTile = GameLoop.Instance.FindPlayerTile();
 
-                var newValidTiles = GameLoop.Instance.MoveManager.Tiles(); //assign the validtiles in this variable
+                _moveManager.Activate(_selectedCard, hoveredTile, fromTile);
+
+                var newValidTiles = _moveManager.Tiles(); //assign the validtiles in this variable
 
                 if (_selectedCard != null && newValidTiles.Contains(_hoveredTile)) //if the hoveredtile is part of the validtiles list
                 {
-                    if (!_selectedCard.MoveName.Equals(MoveNames.Teleport))
-                    {
+                    //if (!_selectedCard.MoveName.Equals(MoveNames.Teleport))
+                    //{
                         _board.HighlightAll(newValidTiles);   //highlight the new one
-                    }
-                    else
-                    {
-                        _board.HighlightOne(_hoveredTile);
-                    }
+                    //}
+                    //else
+                    //{
+                    //    _board.HighlightOne(_hoveredTile);
+                    //}
                 }
 
             }

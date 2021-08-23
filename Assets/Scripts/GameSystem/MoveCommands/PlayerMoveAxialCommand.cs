@@ -16,7 +16,7 @@ namespace GameSystem.MoveCommands
     {
         public const string Name = MoveNames.Axial;
 
-        public override List<Tile> Tiles(Board<Piece, Card> board, Card card, Tile hoveredTile)
+        public override List<Tile> Tiles(Board<Piece, Card> board, Card card, Tile hoveredTile, Tile fromTile)
         {
             var validtiles = new MovementHelper(board)
                 .GenerateTiles();
@@ -59,6 +59,19 @@ namespace GameSystem.MoveCommands
 
             card.MoveTiles = validtiles;
             return validtiles;
+        }
+
+        public override void Execute(Board<Piece, Card> board, Card card, Tile toTile)
+        {
+            foreach (var tile in card.MoveTiles)
+            {
+                var toPiece = board.PieceAt(tile);
+
+                if (toPiece != null)
+                {
+                    board.Take(tile);
+                }
+            }
         }
     }
 }

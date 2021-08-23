@@ -28,6 +28,8 @@ public class GameLoop : SingletonMonoBehaviour<GameLoop>
 
     public StateMachine<GameStateBase> StateMachine;
 
+    public List<PieceView> Players { get; set; }
+
     private void Awake()
     {
         MoveManager = new MoveManager<Piece, Card>(Board);
@@ -35,9 +37,10 @@ public class GameLoop : SingletonMonoBehaviour<GameLoop>
         StateMachine = new StateMachine<GameStateBase>();
 
         ConnectViewsToModel();
+        Players = FindObjectsOfType<PieceView>().ToList();
 
         StateMachine.RegisterState(GameStates.Play, new PlayGameState(Board, MoveManager, CardDeck));
-        StateMachine.RegisterState(GameStates.FindActive, new FindActivePlayerState());
+        StateMachine.RegisterState(GameStates.FindActive, new FindActivePlayerState(Board, Players));
         StateMachine.MoveTo(GameStates.FindActive);
 
         MoveManager.Register(PlayerMoveSweepCommand.Name, new PlayerMoveSweepCommand());
@@ -86,10 +89,9 @@ public class GameLoop : SingletonMonoBehaviour<GameLoop>
 
     public Tile FindPlayerTile()    //REVISIT THIS
     {
-        var pieceViews = FindObjectsOfType<PieceView>();
-        foreach (var pieceView in pieceViews)
+        foreach (var pieceView in Players)
         {
-            if (pieceView.IsPlayer == true /*&& pieceView.Model.IsActive*/) // if we find a player, find the tile it's on and if its active
+            if (pieceView.IsPlayer == true && pieceView.IsActive) // if we find a player, find the tile it's on and if its active
             {
                 var worldPosition = pieceView.transform.position;
                 var boardPosition = _positionHelper.ToBoardPosition(worldPosition);
@@ -100,6 +102,20 @@ public class GameLoop : SingletonMonoBehaviour<GameLoop>
             }
         }
         return null;
+    }
+
+    public List<PieceView> UpdatePlayersList()
+    {
+        var currentplayers = FindObjectsOfType<PieceView>();
+        foreach (var pieceView in Players.ToList())
+        {
+            if (!currentplayers.Contains(pieceView))
+            {
+                Players.Remove(pieceView);
+            }
+        }
+
+        return Players;
     }
 
     public void OnTileEnter(Tile hovereTile)

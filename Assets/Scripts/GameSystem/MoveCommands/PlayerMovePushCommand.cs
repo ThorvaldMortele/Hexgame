@@ -15,7 +15,7 @@ namespace GameSystem.MoveCommands
     public class PlayerMovePushCommand : AbstractMoveCommand
     {
         public const string Name = MoveNames.Push;
-        public override List<Tile> Tiles(Board<Piece, Card> board, Card card, Tile hoveredTile)
+        public override List<Tile> Tiles(Board<Piece, Card> board, Card card, Tile hoveredTile, Tile fromTile)
         {
             var validtiles = new MovementHelper(board)
                 .GenerateTiles();
@@ -82,6 +82,39 @@ namespace GameSystem.MoveCommands
 
             card.MoveTiles = validtiles;
             return validtiles;
+        }
+
+        public override void Execute(Board<Piece, Card> board, Card card, Tile toTile)
+        {
+            var playerTile = GameLoop.Instance.FindPlayerTile();
+
+            foreach (var tile in card.MoveTiles)
+            {
+                var toPiece = board.PieceAt(tile);
+                if (toPiece != null)
+                {
+                    Position moveDirection = new Position
+                        (
+                        tile.Position.X - playerTile.Position.X,
+                        tile.Position.Y - playerTile.Position.Y,
+                        tile.Position.Z - playerTile.Position.Z
+                        );
+                    Position NewTile = new Position
+                        (
+                        tile.Position.X + moveDirection.X,
+                        tile.Position.Y + moveDirection.Y,
+                        tile.Position.Z + moveDirection.Z
+                        );
+
+                    foreach (var tileCheck in board.Tiles)
+                    {
+                        if (tileCheck.Position.Equals(NewTile))
+                        {
+                            board.Move(tile, tileCheck);
+                        }
+                    }
+                }
+            }
         }
 
     }

@@ -16,21 +16,15 @@ namespace GameSystem.MoveCommands
     {
         public const string Name = MoveNames.Teleport;
 
-        public override List<Tile> Tiles(Board<Piece, Card> board, Card card, Tile hoveredTile)
+        public override List<Tile> Tiles(Board<Piece, Card> board, Card card, Tile hoveredTile, Tile fromtile)
         {
             List<Tile> NeighbourStrategy(Tile centerTile) => Neighbours(centerTile, board);
 
             float DistanceStrategy(Tile fromTile, Tile toTile) => Distance(fromTile, toTile);
 
-            var bfs = new BreadthFirstAreaSearch<Tile>(NeighbourStrategy, DistanceStrategy);
+            var pf = new AStarPathFinding<Tile>(NeighbourStrategy, DistanceStrategy, DistanceStrategy);
 
-            var validtiles = new MovementHelper(board)
-                .GenerateTiles();
-
-            validtiles = bfs.Area(GameLoop.Instance.FindPlayerTile(), 9f);
-
-            card.MoveTiles = validtiles;
-            return validtiles;
+            return pf.Path(fromtile, hoveredTile);
         }
 
         private List<Tile> Neighbours(Tile tile, Board<Piece, Card> board)

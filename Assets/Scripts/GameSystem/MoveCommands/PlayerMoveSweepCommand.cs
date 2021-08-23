@@ -15,7 +15,7 @@ namespace GameSystem.MoveCommands
     public class PlayerMoveSweepCommand : AbstractMoveCommand
     {
         public const string Name = MoveNames.Sweep;
-        public override List<Tile> Tiles(Board<Piece, Card> board, Card card, Tile hoveredTile)
+        public override List<Tile> Tiles(Board<Piece, Card> board, Card card, Tile hoveredTile, Tile fromTile)
         {
 
             var validtiles = new MovementHelper(board)
@@ -83,6 +83,19 @@ namespace GameSystem.MoveCommands
 
             card.MoveTiles = validtiles;
             return validtiles;
+        }
+
+        public override void Execute(Board<Piece, Card> board, Card card, Tile toTile)
+        {
+            foreach (var tile in card.MoveTiles)
+            {
+                var toPiece = board.PieceAt(tile);
+
+                if (toPiece != null)
+                {
+                    board.Take(tile);
+                }
+            }
         }
     }
 }

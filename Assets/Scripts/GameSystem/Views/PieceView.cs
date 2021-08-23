@@ -39,6 +39,8 @@ namespace GameSystem.Views
 
         private Piece _model;
 
+        public bool IsActive;
+
         [SerializeField]
         private bool _isPlayer;
 
